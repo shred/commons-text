@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,9 +29,9 @@ import org.junit.Test;
  * @author Richard "Shred" Körber
  */
 public class SimplifyHtmlFilterTest {
-    
+
     private SimplifyHtmlFilter filter;
-    
+
     @Before
     public void setup() {
         filter = new SimplifyHtmlFilter();
@@ -40,7 +39,7 @@ public class SimplifyHtmlFilterTest {
         filter.addAcceptedTag("br");
         filter.addAcceptedTag("img", "src", "alt");
     }
-    
+
     @Test
     public void simpleTest() {
         StringBuilder sb = new StringBuilder();
@@ -51,7 +50,7 @@ public class SimplifyHtmlFilterTest {
         sb.append("<img src='type\"2.gif' alt=f\"oo noscale>");
         sb.append("<img     src = \"type3.gif\"  alt=\"bar foo\" noscale=\"no\">");
         sb = filter.filter(sb);
-        
+
         StringBuilder expect = new StringBuilder();
         expect.append("This is <b>a bad content</b>.");
         expect.append("window.alert('Oops!')");
@@ -59,7 +58,7 @@ public class SimplifyHtmlFilterTest {
         expect.append("<img src=\"type1.gif\" alt=\"alt\">");
         expect.append("<img src=\"type&quot;2.gif\" alt=\"f&quot;oo\">");
         expect.append("<img src=\"type3.gif\" alt=\"bar foo\">");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 
@@ -67,13 +66,13 @@ public class SimplifyHtmlFilterTest {
     public void brokenTest() {
         StringBuilder sb = new StringBuilder();
         sb.append(">broken content<br");
-        
+
         sb = filter.filter(sb);
-        
+
         // Incomplete tags at the end are stripped as well
         StringBuilder expect = new StringBuilder();
         expect.append(">broken content");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 

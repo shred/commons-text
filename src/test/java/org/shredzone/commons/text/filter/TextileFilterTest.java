@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -33,7 +32,7 @@ public class TextileFilterTest {
     @Test
     public void simpleTest() {
         TextileFilter filter = new TextileFilter();
-        
+
         StringBuilder sb = new StringBuilder();
         sb.append("A *bold* text.");
 

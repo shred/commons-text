@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,7 @@
  */
 package org.shredzone.commons.text;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.shredzone.commons.text.filter.ParagraphFilter;
 import org.shredzone.commons.text.filter.StripHtmlFilter;
@@ -37,15 +36,15 @@ public class TextFilterSequenceTest {
         TextFilterSequence filter = new TextFilterSequence();
         filter.addTextFilter(new ParagraphFilter());
         filter.addTextFilter(new StripHtmlFilter());
-        
+
         StringBuilder sb = new StringBuilder();
         sb.append("This is \n\na paragraph \nand a line break.");
-        
+
         sb = filter.filter(sb);
-        
+
         StringBuilder expect = new StringBuilder();
         expect.append("This is a paragraph and a line break.");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 

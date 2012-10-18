@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,7 +28,7 @@ import org.junit.Test;
  * @author Richard "Shred" Körber
  */
 public class NormalizeFilterTest {
-    
+
     @Test
     public void simpleTest() {
         NormalizeFilter filter = new NormalizeFilter();
@@ -38,14 +37,14 @@ public class NormalizeFilterTest {
         sb.append("A normal double\n\nline feed.\n");
         sb.append("A CRLF\r\nline feed\r\n\r\ndoubled.");
         sb.append("A mac\rline feed\r\rdoubled.");
-        
+
         sb = filter.filter(sb);
-        
+
         StringBuilder expect = new StringBuilder();
         expect.append("A normal double\n\nline feed.\n");
         expect.append("A CRLF\nline feed\n\ndoubled.");
         expect.append("A mac\nline feed\n\ndoubled.");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 

@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,8 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -29,7 +28,7 @@ import org.junit.Test;
  * @author Richard "Shred" Körber
  */
 public class LinkToUrlFilterTest {
-    
+
     @Test
     public void simpleTest() {
         LinkToUrlFilter filter = new LinkToUrlFilter();
@@ -38,14 +37,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is a http://www.link.example/to/somewhere.gif. ");
         sb.append("This is another https://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
-        
+
         sb = filter.filter(sb);
-       
+
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\">http://www.link.example/to/somewhere.gif</a>. ");
         expect.append("This is another <a href=\"https://www.link.example/to/\">https://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\">ftp://ftp.foobar.example/file.png</a>");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 
@@ -58,14 +57,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is a http://www.link.example/to/somewhere.gif ");
         sb.append("This is another HTTPS://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
-        
+
         sb = filter.filter(sb);
-        
+
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" rel=\"nofollow\">http://www.link.example/to/somewhere.gif</a> ");
         expect.append("This is another <a href=\"HTTPS://www.link.example/to/\" rel=\"nofollow\">HTTPS://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" rel=\"nofollow\">ftp://ftp.foobar.example/file.png</a>");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 
@@ -78,14 +77,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is a http://www.link.example/to/somewhere.gif ");
         sb.append("This is another https://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
-        
+
         sb = filter.filter(sb);
-        
+
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_blank\">http://www.link.example/to/somewhere.gif</a> ");
         expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_blank\">https://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_blank\">ftp://ftp.foobar.example/file.png</a>");
-        
+
         Assert.assertEquals(expect.toString(), sb.toString());
     }
 

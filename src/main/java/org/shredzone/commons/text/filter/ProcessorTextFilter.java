@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -25,7 +25,7 @@ import org.shredzone.commons.text.TextProcessor;
 /**
  * A {@link TextFilter} that uses the implementing {@link TextProcessor} for modifying a
  * text.
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public abstract class ProcessorTextFilter implements TextFilter, TextProcessor {

@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -34,7 +34,7 @@ import org.shredzone.commons.text.utils.StringUtils;
  * A filter that detects smily sequences, and replaces them with an image. The filter
  * tries to find the best match by the string length of the smily code, so it can safely
  * distinguish between smilies like ":-)" and ":-))".
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public class SmilyFilter implements TextFilter {
@@ -45,7 +45,7 @@ public class SmilyFilter implements TextFilter {
             return o2.length() - o1.length();
         }
     };
-    
+
     private String baseUrl = "";
     private Map<String, String> smilyMap = new HashMap<String, String>();
     private Pattern smilyPattern;
@@ -59,7 +59,7 @@ public class SmilyFilter implements TextFilter {
 
     /**
      * Adds a smily to be detected.
-     * 
+     *
      * @param smily
      *            Smily code to detect (e.g. ":-)")
      * @param image
@@ -73,7 +73,7 @@ public class SmilyFilter implements TextFilter {
 
     /**
      * Sets the base url that is prepended to the image file names.
-     * 
+     *
      * @param url
      *            Base url (e.g. "/img/smiles"), defaults to the current directory
      */
@@ -90,10 +90,10 @@ public class SmilyFilter implements TextFilter {
      */
     private void updatePattern() {
         StringBuilder pattern = new StringBuilder();
-        
+
         Set<String> smilySet = smilyMap.keySet();
         String[] smilys = smilySet.toArray(new String[smilySet.size()]);
-        
+
         // We need to sort the smilys by their string length (descending), so the regex
         // will match the longest smilys first (":-))" before ":-)").
         Arrays.sort(smilys, STRING_LENGTH_COMPARATOR);
@@ -107,14 +107,14 @@ public class SmilyFilter implements TextFilter {
 
         smilyPattern = Pattern.compile(pattern.toString(), Pattern.DOTALL);
     }
-    
+
     @Override
     public StringBuilder filter(StringBuilder text) {
         Matcher m = smilyPattern.matcher(text);
-        
+
         StringBuilder result = null;
         int lastEnd = 0;
-        
+
         m.reset();
         while(m.find()) {
             if (result == null) {
@@ -122,7 +122,7 @@ public class SmilyFilter implements TextFilter {
             }
 
             result.append(text, lastEnd, m.start());
-            
+
             String smily = m.group();
             String smilyUrl = smilyMap.get(smily);
             if (smilyUrl != null) {
@@ -130,24 +130,24 @@ public class SmilyFilter implements TextFilter {
                 // TODO: Add optional class/style and width/height attributes
                 result.append(" alt=\"").append(StringUtils.escapeHtml(smily)).append('"');
                 result.append(" />");
-                
+
             } else {
                 // Append the smily code. Should never happen, as the regex is built from
                 // the map keys...
                 result.append(smily);
             }
-            
+
             lastEnd = m.end();
         }
-        
+
         if (result == null) {
             return text;
         }
-        
+
         if (lastEnd < text.length()) {
             result.append(text, lastEnd, text.length());
         }
-        
+
         return result;
     }
 

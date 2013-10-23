@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,7 +27,7 @@ import org.shredzone.commons.text.TextFilter;
 /**
  * A filter that detects links in a text, and creates an HTML &lt;a> tag around each link.
  * http, https and ftp protocols are detected.
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public class LinkToUrlFilter implements TextFilter {
@@ -53,7 +53,7 @@ public class LinkToUrlFilter implements TextFilter {
      * Sets the way search engines evaluate the created link. If set to {@code false}, a
      * {@code rel="nofollow"} attribute is added to the link, so web crawlers will not
      * follow to the target.
-     * 
+     *
      * @param follow
      *            {@code true} if links should be followed by web crawlers. Defaults to
      *            {@code true}.
@@ -65,7 +65,7 @@ public class LinkToUrlFilter implements TextFilter {
 
     /**
      * Sets the link's target attribute.
-     * 
+     *
      * @param target
      *            Link target, or {@code null} if no target is to be set.
      */
@@ -84,7 +84,7 @@ public class LinkToUrlFilter implements TextFilter {
         sb.append(">$2</a>");
         tag = sb.toString();
     }
-    
+
     @Override
     public StringBuilder filter(StringBuilder text) {
         Matcher m = URL_PATTERN.matcher(text);

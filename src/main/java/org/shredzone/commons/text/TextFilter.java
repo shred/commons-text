@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -33,7 +33,7 @@ public interface TextFilter {
      * Filters a text. The result is returned in a {@link StringBuilder}. Depending on the
      * implementation, the returned {@link StringBuilder} may be the one that was passed
      * in (with modified contents), or a new {@link StringBuilder} instance.
-     * 
+     *
      * @param text
      *            {@link StringBuilder} with the contents to be filtered. Contents
      *            <em>may</em> have changed after invocation, and should not be used any

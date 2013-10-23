@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -31,26 +31,26 @@ import java.util.List;
 public class TextFilterSequence implements TextFilter {
 
     private final List<TextFilter> filterList = new ArrayList<TextFilter>();
-    
+
     /**
      * Adds a new {@link TextFilter} to the filter chain. Filters are invoked in the order
      * they were added.
-     * 
+     *
      * @param filter
      *            {@link TextFilter} to add
      */
     public void addTextFilter(TextFilter filter) {
         filterList.add(filter);
     }
-    
+
     @Override
     public StringBuilder filter(StringBuilder text) {
         StringBuilder result = text;
-        
+
         for (TextFilter filter : filterList) {
             result = filter.filter(result);
         }
-        
+
         return result;
     }
 

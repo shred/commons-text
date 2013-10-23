@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * <p>
  * This filter can be used to allow a site visitor to enter marked-up text, but remove
  * everything that might be harmful or induce Cross Site Scripting.
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public class SimplifyHtmlFilter extends ProcessorTextFilter {
@@ -44,7 +44,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
 
     /**
      * Adds a tag that is accepted by this filter, with all its attributes.
-     * 
+     *
      * @param tag
      *            HTML tag that is accepted (without angle brackets, e.g. "strong")
      */
@@ -54,7 +54,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
 
     /**
      * Adds a tag that is accepted by this filter, along with accepted attributes.
-     * 
+     *
      * @param tag
      *            HTML tag that is accepted (without angle brackets, e.g. "img")
      * @param attributes
@@ -65,12 +65,12 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
             addAcceptedTag(tag);
             return;
         }
-        
+
         Set<String> attributeSet = new HashSet<String>(attributes.length);
         for (String attr : attributes) {
             attributeSet.add(attr.toLowerCase());
         }
-        
+
         acceptedTags.put(tag.toLowerCase(), attributeSet);
     }
 
@@ -78,7 +78,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
     public int process(StringBuilder text, int start, int end) {
         int ix = start;
         int max = end;
-        
+
         while (ix < max) {
             if (text.charAt(ix) == '<') {
                 int endPos = ix + 1;
@@ -99,13 +99,13 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
                 ix++;
             }
         }
-        
+
         return max;
     }
 
     /**
      * Processes a tag that was spotted.
-     * 
+     *
      * @param text
      *            Tag (complete tag including the angle brackets)
      * @return Cleaned up tag, or {@code null} if the tag was not accepted
@@ -127,10 +127,10 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
                 result.append('>');
                 return result.toString();
             }
-            
+
             return null;
         }
-        
+
         // Is it a closing tag?
         Matcher m2 = TAG_CLOSE.matcher(text);
         if (m2.matches()) {
@@ -138,16 +138,16 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
             if (acceptedTags.containsKey(tag)) {
                 return "</" + tag + ">";
             }
-            
+
             return null;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Processes an attribute string and builds clean attributes if accepted.
-     * 
+     *
      * @param attr
      *            Raw attribute string
      * @param result
@@ -161,7 +161,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
         if (accepted == null || accepted.isEmpty()) {
             return;
         }
-        
+
         int pos = 0;
         int max = attr.length();
 
@@ -169,42 +169,42 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
             // Attribute name
             StringBuilder attrName = new StringBuilder();
             StringBuilder attrValue = null;
-            
+
             while (pos < max) {
                 char ch = attr.charAt(pos);
                 if (!Character.isLetterOrDigit(ch)) break;
                 attrName.append(ch);
                 pos++;
             }
-            
+
             // Skip Whitespaces
             while (pos < max && Character.isWhitespace(attr.charAt(pos))) {
                 pos++;
             }
-            
+
             if (pos < max && attr.charAt(pos) == '=') {
                 attrValue = new StringBuilder();
-                
+
                 // Attribute with value
                 pos++;
-                
+
                 // Skip Whitespaces
                 while (pos < max && Character.isWhitespace(attr.charAt(pos))) {
                     pos++;
                 }
-                
+
                 if (pos < max) {
                     char quote = attr.charAt(pos);
                     if (quote == '"' || quote == '\'') {
                         pos++;  // skip opening quote
-                        
+
                         while (pos < max && attr.charAt(pos) != quote) {
                             attrValue.append(attr.charAt(pos));
                             pos++;
                         }
-                        
+
                         pos++;  // skip closing quote
-                        
+
                     } else {
                         // Attributes without quotes, just copy to the end
                         while (pos < max && !Character.isWhitespace(attr.charAt(pos))) {
@@ -213,13 +213,13 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
                         }
                     }
                 }
-                
+
                 // Skip trailing whitespaces
                 while (pos < max && Character.isWhitespace(attr.charAt(pos))) {
                     pos++;
                 }
             }
-    
+
             if (accepted.contains(attrName.toString().toLowerCase())) {
                 result.append(' ').append(attrName).append('=');
                 if (attrValue != null) {
@@ -233,5 +233,5 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
             }
         }
     }
-    
+
 }

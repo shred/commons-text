@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -21,7 +21,7 @@ package org.shredzone.commons.text.utils;
 
 /**
  * A collection of String operations.
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public final class StringUtils {
@@ -32,7 +32,7 @@ public final class StringUtils {
 
     /**
      * Replaces a section of the {@link StringBuilder} with the given replacement string.
-     * 
+     *
      * @param sb
      *            {@link StringBuilder} to operate on
      * @param start
@@ -51,7 +51,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is prepended by a
      * digit.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -66,7 +66,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is followed by a
      * digit.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -81,7 +81,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is prepended by
      * the given character.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -98,7 +98,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is followed by the
      * given character.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -115,7 +115,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is prepended by
      * the given string.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -132,7 +132,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is prepended by a
      * whitespace character.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -147,7 +147,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} is followed by a
      * whitespace character.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -162,7 +162,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} represents the
      * start of a line.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -178,7 +178,7 @@ public final class StringUtils {
     /**
      * Returns {@code true} if the position of the {@link CharSequence} represents the
      * end of a line.
-     * 
+     *
      * @param text
      *            {@link CharSequence} to test
      * @param pos
@@ -194,7 +194,7 @@ public final class StringUtils {
     /**
      * Safely fetch the character at the given position. If the position is outside of the
      * text boundaries, NUL (0x00) is returned.
-     * 
+     *
      * @param text
      *            Text to fetch the character from
      * @param pos
@@ -211,7 +211,7 @@ public final class StringUtils {
 
     /**
      * Escapes a text so it can be safely used in HTML.
-     * 
+     *
      * @param text
      *            Text to be escaped
      * @return Escaped text

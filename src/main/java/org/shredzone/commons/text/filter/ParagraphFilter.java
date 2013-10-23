@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,16 +26,16 @@ package org.shredzone.commons.text.filter;
  * <p>
  * This filter expects a normalized text (only LF is accepted as EOL marker, see
  * {@link NormalizeFilter}).
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public class ParagraphFilter extends ProcessorTextFilter {
 
     private boolean foldLines = true;
-    
+
     /**
      * Also fold single EOL marker.
-     * 
+     *
      * @param foldLines
      *            {@code true} to create {@code &lt;br />} tags for single EOL markers,
      *            {@code false} to keep the EOL marker. Defaults to {@code true}.
@@ -43,32 +43,32 @@ public class ParagraphFilter extends ProcessorTextFilter {
     public void setFoldLines(boolean foldLines) {
         this.foldLines = foldLines;
     }
-    
+
     @Override
     public int process(StringBuilder text, int start, int end) {
         text.insert(end, "</p>").insert(start, "<p>");
-        
+
         int max = end + 3 + 4;
         int ix = start + 3;
-        
+
         while (ix < max) {
             if (text.charAt(ix) == '\n') {
                 int lineEnd = ix + 1;
                 while (lineEnd < max && text.charAt(lineEnd) == '\n') {
                     lineEnd++;
                 }
-                
+
                 String replacement = (lineEnd > ix + 1) ? "</p><p>" : (foldLines ? "<br />" : "\n");
 
                 text.replace(ix, lineEnd, replacement);
-                
+
                 max += replacement.length() - (lineEnd - ix);
                 ix += replacement.length();
             } else {
                 ix++;
             }
         }
-        
+
         return max;
     }
 

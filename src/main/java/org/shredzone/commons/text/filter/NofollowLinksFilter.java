@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -28,7 +28,7 @@ import org.shredzone.commons.text.TextFilter;
  * A filter that detects HTML hyperlinks, and adds a {@code rel="nofollow"} attribute.
  * This filter can be used to post-process HTML content created by a site visitor, so
  * web crawlers won't follow their links.
- * 
+ *
  * @author Richard "Shred" Körber
  */
 public class NofollowLinksFilter implements TextFilter {
@@ -36,7 +36,7 @@ public class NofollowLinksFilter implements TextFilter {
     private final static Pattern HREF_PATTERN = Pattern.compile(
             "(.*?)(<a[^>]+?href\\s*=\\s*[\"']?(?:https?|ftp|mailto|file):.+?)>",
             Pattern.CASE_INSENSITIVE);
-    
+
     @Override
     public StringBuilder filter(StringBuilder text) {
         Matcher m = HREF_PATTERN.matcher(text);

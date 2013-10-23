@@ -30,7 +30,7 @@
         </developer>
     </developers>
     <properties>
-        <textilej.version>2.2</textilej.version>
+        <wikitext.version>0.9.4.I20090220-1600-e3x</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -107,17 +107,16 @@
             </plugin>
         </plugins>
     </reporting>
-    <repositories>
-        <repository>
-            <id>java-net</id>
-            <url>http://download.java.net/maven/2</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
-            <groupId>net.java</groupId>
-            <artifactId>textile-j</artifactId>
-            <version>${textilej.version}</version>
+            <groupId>org.eclipse.mylyn.wikitext</groupId>
+            <artifactId>wikitext</artifactId>
+            <version>${wikitext.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.mylyn.wikitext</groupId>
+            <artifactId>wikitext.textile</artifactId>
+            <version>${wikitext.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

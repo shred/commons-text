@@ -8,7 +8,7 @@
  * it under the terms of the GNU Library General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -22,22 +22,21 @@ package org.shredzone.commons.text.filter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import net.java.textilej.parser.Attributes;
-import net.java.textilej.parser.DocumentBuilder;
-import net.java.textilej.parser.MarkupParser;
-import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import net.java.textilej.parser.markup.textile.TextileDialect;
-
+import org.eclipse.mylyn.wikitext.core.parser.Attributes;
+import org.eclipse.mylyn.wikitext.core.parser.DocumentBuilder;
+import org.eclipse.mylyn.wikitext.core.parser.MarkupParser;
+import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
+import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 import org.shredzone.commons.text.LinkAnalyzer;
 import org.shredzone.commons.text.TextFilter;
 
 /**
  * A filter that converts Textile markup to HTML.
  * <p>
- * Currently, Textile-j is used for conversion. Future releases may come with an own,
- * lightweight implementation.
- * 
- * @see <a href="http://java.net/projects/textile-j">Textile-j</a>
+ * Currently, Mylyn WikiText Textile (formerly known as Textile-J) is used for conversion.
+ * Future releases may come with an own, lightweight implementation.
+ *
+ * @see <a href="http://wiki.eclipse.org/Mylyn/Incubator/WikiText">Mylyn WikiText</a>
  * @author Richard "Shred" Körber
  */
 public class TextileFilter implements TextFilter {
@@ -46,7 +45,7 @@ public class TextileFilter implements TextFilter {
 
     /**
      * Sets a {@link LinkAnalyzer} to be used for converting links and image source URLs.
-     * 
+     *
      * @param analyzer
      *            {@link LinkAnalyzer} to be used
      */
@@ -59,7 +58,7 @@ public class TextileFilter implements TextFilter {
      * <p>
      * Note that this method is Textile-j specific and might be removed in future
      * versions.
-     * 
+     *
      * @param writer
      *            {@link StringWriter} to write the HTML output to
      * @return {@link DocumentBuilder} to be used for the markup parser
@@ -78,7 +77,7 @@ public class TextileFilter implements TextFilter {
     public StringBuilder filter(StringBuilder text) {
         StringWriter writer = new StringWriter();
 
-        MarkupParser parser = new MarkupParser(new TextileDialect());
+        MarkupParser parser = new MarkupParser(new TextileLanguage());
         parser.setBuilder(createDocumentBuilder(writer));
         parser.parse(text.toString());
 

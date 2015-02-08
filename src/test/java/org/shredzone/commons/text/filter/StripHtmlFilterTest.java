@@ -34,14 +34,14 @@ public class StripHtmlFilterTest {
         StripHtmlFilter filter = new StripHtmlFilter();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("<hr>This is <b>a bad content</b>.");
+        sb.append("<h1>wow!</h1><hr>This is <b>a bad content</b>.");
         sb.append("<script>window.alert('Oops!')</script>");
         sb.append("<br /><IMG \nsrc=\"foo.gif\"><img src='foo2.gif'>");
 
         CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
-        expect.append("This is a bad content.");
+        expect.append("wow! This is a bad content.");
         expect.append(" window.alert('Oops!')");
 
         Assert.assertEquals(expect.toString(), out.toString());

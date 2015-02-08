@@ -32,10 +32,11 @@ public class NormalizeFilter implements TextFilter {
     public CharSequence apply(CharSequence text) {
         StringBuilder sb = toStringBuilder(text);
 
+        // Benchmark says this is faster than replaceAll
         int max = sb.length();
         for (int ix = 0; ix < max; ix++) {
             if (sb.charAt(ix) == '\r') {
-                if ((ix + 1) < sb.length() && sb.charAt(ix + 1) == '\n') {
+                if ((ix + 1) < max && sb.charAt(ix + 1) == '\n') {
                     sb.deleteCharAt(ix);
                     max--;
                 } else {

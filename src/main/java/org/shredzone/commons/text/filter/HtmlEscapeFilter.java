@@ -31,16 +31,18 @@ public class HtmlEscapeFilter implements TextFilter {
 
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuilder sb = toStringBuilder(text);
-
-        int ix = 0;
-        int max = sb.length();
-        while (ix < max) {
-            switch (sb.charAt(ix)) {
-                case '<': sb.replace(ix, ix + 1, "&lt;");   ix += 4; max += 3; break;
-                case '&': sb.replace(ix, ix + 1, "&amp;");  ix += 5; max += 4; break;
-                case '"': sb.replace(ix, ix + 1, "&quot;"); ix += 6; max += 5; break;
-                default: ix++;
+        int len = text.length();
+        StringBuilder sb = new StringBuilder(len * 11 / 10);
+        for (int ix = 0; ix < len; ix++) {
+            char ch = text.charAt(ix);
+            if (ch == '<') {
+                sb.append("&lt;");
+            } else if (ch == '&') {
+                sb.append("&amp;");
+            } else if (ch == '"') {
+                sb.append("&quot;");
+            } else {
+                sb.append(ch);
             }
         }
         return sb;

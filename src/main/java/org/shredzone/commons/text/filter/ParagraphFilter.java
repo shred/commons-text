@@ -62,12 +62,17 @@ public class ParagraphFilter implements TextFilter {
                     lineEnd++;
                 }
 
-                String replacement = (lineEnd > ix + 1) ? "</p><p>" : (foldLines ? "<br />" : "\n");
-
-                sb.replace(ix, lineEnd, replacement);
-
-                max += replacement.length() - (lineEnd - ix);
-                ix += replacement.length();
+                if (lineEnd > ix + 1) {
+                    sb.replace(ix, lineEnd, "</p><p>");
+                    max += 7 - (lineEnd - ix);
+                    ix += 7;
+                } else if (foldLines) {
+                    sb.replace(ix, lineEnd, "<br />");
+                    max += 6 - (lineEnd - ix);
+                    ix += 6;
+                } else {
+                    ix++;
+                }
             } else {
                 ix++;
             }

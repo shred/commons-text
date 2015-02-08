@@ -75,7 +75,7 @@ public class TextileFilter implements TextFilter {
 
     @Override
     public CharSequence apply(CharSequence text) {
-        CharArrayWriter writer = new CharArrayWriter();
+        CharArrayWriter writer = new CharArrayWriter(text.length() * 15 / 10);
 
         MarkupParser parser = new MarkupParser(new TextileLanguage());
         parser.setBuilder(createDocumentBuilder(writer));

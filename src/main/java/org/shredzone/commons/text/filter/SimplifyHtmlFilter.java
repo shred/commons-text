@@ -19,13 +19,15 @@
  */
 package org.shredzone.commons.text.filter;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.shredzone.commons.text.TextFilter;
 
@@ -40,6 +42,7 @@ import org.shredzone.commons.text.TextFilter;
  */
 public class SimplifyHtmlFilter implements TextFilter {
 
+    private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+(>|$)", Pattern.DOTALL);
     private static final Pattern TAG_OPEN = Pattern.compile("<(\\w+)\\s*(.*?)\\s*(/?)>");
     private static final Pattern TAG_CLOSE = Pattern.compile("</(\\w+)\\s*>");
 
@@ -64,45 +67,30 @@ public class SimplifyHtmlFilter implements TextFilter {
      *            an array of accepted attributes (e.g. "src", "alt")
      */
     public void addAcceptedTag(String tag, String... attributes) {
+        Objects.requireNonNull(tag);
+
         if (attributes == null || attributes.length == 0) {
             acceptedTags.put(tag.toLowerCase(), null);
             return;
         }
 
         Set<String> attributeSet = Arrays.stream(attributes)
-            .map(String::toLowerCase)
-            .collect(Collectors.toSet());
+                .map(String::toLowerCase)
+                .collect(toSet());
 
         acceptedTags.put(tag.toLowerCase(), attributeSet);
     }
 
+
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuilder sb = toStringBuilder(text);
+        StringBuffer sb = new StringBuffer(text.length() * 11 / 10);
 
-        int ix = 0;
-        int max = sb.length();
-
-        while (ix < max) {
-            if (sb.charAt(ix) == '<') {
-                int endPos = ix + 1;
-                while (endPos < sb.length() && sb.charAt(endPos) != '>') {
-                    endPos++;
-                }
-                endPos = Math.min(endPos + 1, max);
-                String replacement = processTag(sb.subSequence(ix, endPos));
-                if (replacement != null) {
-                    sb.replace(ix, endPos, replacement);
-                    max += replacement.length() - (endPos - ix);
-                    ix += replacement.length();
-                } else {
-                    sb.delete(ix, endPos);
-                    max -= endPos - ix;
-                }
-            } else {
-                ix++;
-            }
+        Matcher m = TAG_PATTERN.matcher(text);
+        while (m.find()) {
+            m.appendReplacement(sb, processTag(m.group(0)));
         }
+        m.appendTail(sb);
 
         return sb;
     }
@@ -115,38 +103,37 @@ public class SimplifyHtmlFilter implements TextFilter {
      * @return Cleaned up tag, or {@code null} if the tag was not accepted
      */
     private String processTag(CharSequence text) {
-        // Is it an opening tag?
-        Matcher m1 = TAG_OPEN.matcher(text);
-        if (m1.matches()) {
-            String tag = m1.group(1).toLowerCase();
-            String attr = m1.group(2);
-            String closing = m1.group(3);
-            if (acceptedTags.containsKey(tag)) {
-                StringBuilder result = new StringBuilder();
-                result.append('<').append(tag);
-                processAttributes(attr, result, acceptedTags.get(tag));
-                if (closing.equals("/")) {
-                    result.append(" /");
+        if (text.charAt(1) != '/') {
+            // Opening tag or empty element shorthand
+            Matcher m1 = TAG_OPEN.matcher(text);
+            if (m1.matches()) {
+                String tag = m1.group(1).toLowerCase();
+                String attr = m1.group(2);
+                String closing = m1.group(3);
+                if (acceptedTags.containsKey(tag)) {
+                    StringBuilder result = new StringBuilder();
+                    result.append('<').append(tag);
+                    processAttributes(attr, result, acceptedTags.get(tag));
+                    if (closing.equals("/")) {
+                        result.append(" /");
+                    }
+                    result.append('>');
+                    return result.toString();
                 }
-                result.append('>');
-                return result.toString();
             }
 
-            return null;
-        }
-
-        // Is it a closing tag?
-        Matcher m2 = TAG_CLOSE.matcher(text);
-        if (m2.matches()) {
-            String tag = m2.group(1).toLowerCase();
-            if (acceptedTags.containsKey(tag)) {
-                return "</" + tag + ">";
+        } else {
+            // Closing tag
+            Matcher m2 = TAG_CLOSE.matcher(text);
+            if (m2.matches()) {
+                String tag = m2.group(1).toLowerCase();
+                if (acceptedTags.containsKey(tag)) {
+                    return "</" + tag + ">";
+                }
             }
-
-            return null;
         }
 
-        return null;
+        return "";
     }
 
     /**
@@ -161,7 +148,7 @@ public class SimplifyHtmlFilter implements TextFilter {
      *            attribute is accepted
      */
     private void processAttributes(String attr, StringBuilder result, Set<String> accepted) {
-        // If we accept no tags, we will not change the result anyways.
+        // If we accept no attributes, we will not change the result anyways.
         if (accepted == null || accepted.isEmpty()) {
             return;
         }
@@ -171,7 +158,7 @@ public class SimplifyHtmlFilter implements TextFilter {
 
         while (pos < max) {
             // Attribute name
-            StringBuilder attrName = new StringBuilder();
+            StringBuilder attrName = new StringBuilder(attr.length() * 11 / 10);
             StringBuilder attrValue = null;
 
             while (pos < max) {

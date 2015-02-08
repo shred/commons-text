@@ -84,9 +84,9 @@ public class SmilyFilter implements TextFilter {
         // We need to sort the smilys by their string length (descending), so the regex
         // will match the longest smilys first (":-))" before ":-)").
         String pattern = smilyMap.keySet().stream()
-            .sorted(comparing(String::length).reversed())
-            .map(Pattern::quote)
-            .collect(joining("|"));
+                .sorted(comparing(String::length).reversed())
+                .map(Pattern::quote)
+                .collect(joining("|"));
 
         smilyPattern = Pattern.compile(pattern.toString(), Pattern.DOTALL);
     }

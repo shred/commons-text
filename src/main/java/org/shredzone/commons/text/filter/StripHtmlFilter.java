@@ -19,6 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.shredzone.commons.text.TextFilter;
@@ -42,77 +43,30 @@ public class StripHtmlFilter implements TextFilter {
             "kbd|var|cite|dfn|abbr|acronym|q|del|ins|bdo|b|i|u|tt|s|strike|big|small|" +
             "sup|sub|span|img", Pattern.CASE_INSENSITIVE);
 
+    private static final Pattern TAG_PATTERN = Pattern.compile("</?([a-zA-Z0-9]+)[^>]*>", Pattern.DOTALL);
+
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuilder sb = toStringBuilder(text);
+        StringBuffer sb = new StringBuffer();
 
-        int ix = 0;
-        int max = sb.length();
-        boolean lastWhitespace = false;
+        Matcher m = TAG_PATTERN.matcher(text);
+        while (m.find()) {
+            String tag = m.group(1);
 
-        while (ix < max) {
-            if (sb.charAt(ix) == '<') {
-                int endPos = ix + 1;
-                while (endPos < max && sb.charAt(endPos) != '>') {
-                    endPos++;
-                }
-                if (endPos == max) {
-                    return sb;
-                }
-
-                boolean isInline = isInline(sb, ix, endPos + 1);
-
-                sb.delete(ix, endPos + 1);
-                max -= endPos + 1 - ix;
-
-                if (!isInline && ix > 0 && !Character.isWhitespace(sb.charAt(ix - 1))) {
-                    sb.insert(ix, ' ');
-                    ix++;
-                    max++;
-                    lastWhitespace = true;
-                }
+            boolean isInline = INLINE_TAGS.matcher(tag).matches();
+            if (!isInline && sb.length() > 0 && !Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+                m.appendReplacement(sb, " ");
             } else {
-                ix++;
-                lastWhitespace = false;
+                m.appendReplacement(sb, "");
             }
         }
+        m.appendTail(sb);
 
-        // Trim trailing whitespace
-        if (lastWhitespace) {
-            sb.deleteCharAt(--max);
+        if (sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+            sb.deleteCharAt(sb.length() - 1);
         }
 
         return sb;
-    }
-
-    /**
-     * Tests if the given text snippet contains an inline tag name.
-     *
-     * @param text
-     *            Text to check
-     * @param start
-     *            Starting position, must be at the opening angle bracket of the tag
-     * @param end
-     *            Ending position, must be at the closing angle bracket of the tag
-     * @return {@code true} if this is an inline tag (either empty, opening or closing)
-     */
-    private boolean isInline(CharSequence text, int start, int end) {
-        int ix = start + 1;
-
-        if (ix < end && text.charAt(ix) == '/') {
-            ix++;
-        }
-
-        int last = ix;
-        while (last < end && Character.isLetter(text.charAt(last))) {
-            last++;
-        }
-
-        if (ix >= end || last >= end) {
-            return false;
-        }
-
-        return INLINE_TAGS.matcher(text.subSequence(ix, last)).matches();
     }
 
 }

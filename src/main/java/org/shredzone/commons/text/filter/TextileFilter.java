@@ -19,7 +19,6 @@
  */
 package org.shredzone.commons.text.filter;
 
-import java.io.CharArrayWriter;
 import java.io.Writer;
 
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
@@ -29,6 +28,7 @@ import org.eclipse.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 import org.shredzone.commons.text.LinkAnalyzer;
 import org.shredzone.commons.text.TextFilter;
+import org.shredzone.commons.text.utils.FastStringWriter;
 
 /**
  * A filter that converts Textile markup to HTML.
@@ -75,13 +75,13 @@ public class TextileFilter implements TextFilter {
 
     @Override
     public CharSequence apply(CharSequence text) {
-        CharArrayWriter writer = new CharArrayWriter(text.length() * 15 / 10);
+        FastStringWriter writer = new FastStringWriter(text.length() * 15 / 10);
 
         MarkupParser parser = new MarkupParser(new TextileLanguage());
         parser.setBuilder(createDocumentBuilder(writer));
         parser.parse(text.toString());
 
-        return writer.toString();
+        return writer.toStringBuilder();
     }
 
     /**

@@ -38,14 +38,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is another https://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\">http://www.link.example/to/somewhere.gif</a>. ");
         expect.append("This is another <a href=\"https://www.link.example/to/\">https://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\">ftp://ftp.foobar.example/file.png</a>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -58,14 +58,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is another HTTPS://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" rel=\"nofollow\">http://www.link.example/to/somewhere.gif</a> ");
         expect.append("This is another <a href=\"HTTPS://www.link.example/to/\" rel=\"nofollow\">HTTPS://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" rel=\"nofollow\">ftp://ftp.foobar.example/file.png</a>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -78,14 +78,14 @@ public class LinkToUrlFilterTest {
         sb.append("This is another https://www.link.example/to/ a directory. ");
         sb.append("Download here ftp://ftp.foobar.example/file.png");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_blank\">http://www.link.example/to/somewhere.gif</a> ");
         expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_blank\">https://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_blank\">ftp://ftp.foobar.example/file.png</a>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

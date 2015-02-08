@@ -86,12 +86,12 @@ public class LinkToUrlFilter implements TextFilter {
     }
 
     @Override
-    public StringBuilder filter(StringBuilder text) {
+    public CharSequence apply(CharSequence text) {
         Matcher m = URL_PATTERN.matcher(text);
         if (!m.matches()) {
             return text;
         }
-        return new StringBuilder(m.replaceAll(tag));
+        return m.replaceAll(tag);
     }
 
 }

@@ -19,11 +19,12 @@
  */
 package org.shredzone.commons.text.filter;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,15 +40,8 @@ import org.shredzone.commons.text.utils.StringUtils;
  */
 public class SmilyFilter implements TextFilter {
 
-    private static final Comparator<String> STRING_LENGTH_COMPARATOR = new Comparator<String>() {
-        @Override
-        public int compare(String o1, String o2) {
-            return o2.length() - o1.length();
-        }
-    };
-
     private String baseUrl = "";
-    private Map<String, String> smilyMap = new HashMap<String, String>();
+    private Map<String, String> smilyMap = new HashMap<>();
     private Pattern smilyPattern;
 
     /**
@@ -66,8 +60,7 @@ public class SmilyFilter implements TextFilter {
      *            Image file name to be shown instead
      */
     public void addSmily(String smily, String image) {
-        if (smily == null || image == null) throw new NullPointerException("null parameter");
-        smilyMap.put(smily, image);
+        smilyMap.put(Objects.requireNonNull(smily), Objects.requireNonNull(image));
         updatePattern();
     }
 
@@ -78,8 +71,7 @@ public class SmilyFilter implements TextFilter {
      *            Base url (e.g. "/img/smiles"), defaults to the current directory
      */
     public void setBaseUrl(String url) {
-        if (url == null) throw new NullPointerException("url must not be null");
-        this.baseUrl = url;
+        this.baseUrl = Objects.requireNonNull(url);
         if (baseUrl.length() > 0 && !baseUrl.endsWith("/")) {
             baseUrl += '/';
         }
@@ -89,27 +81,19 @@ public class SmilyFilter implements TextFilter {
      * Updates the regular expression for smily detection.
      */
     private void updatePattern() {
-        StringBuilder pattern = new StringBuilder();
-
-        Set<String> smilySet = smilyMap.keySet();
-        String[] smilys = smilySet.toArray(new String[smilySet.size()]);
-
         // We need to sort the smilys by their string length (descending), so the regex
         // will match the longest smilys first (":-))" before ":-)").
-        Arrays.sort(smilys, STRING_LENGTH_COMPARATOR);
-
-        boolean separator = false;
-        for (String smily : smilys) {
-            if (separator) pattern.append('|');
-            pattern.append(Pattern.quote(smily));
-            separator = true;
-        }
+        String pattern = smilyMap.keySet().stream()
+            .sorted(comparing(String::length).reversed())
+            .map(Pattern::quote)
+            .collect(joining("|"));
 
         smilyPattern = Pattern.compile(pattern.toString(), Pattern.DOTALL);
     }
 
+
     @Override
-    public StringBuilder filter(StringBuilder text) {
+    public CharSequence apply(CharSequence text) {
         Matcher m = smilyPattern.matcher(text);
 
         StringBuilder result = null;

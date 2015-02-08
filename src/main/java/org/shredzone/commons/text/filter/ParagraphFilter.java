@@ -19,6 +19,8 @@
  */
 package org.shredzone.commons.text.filter;
 
+import org.shredzone.commons.text.TextFilter;
+
 /**
  * A filter that detects paragraphs and surrounds them with a HTML {@code &lt;p>}
  * container. Paragraphs are separated by empty lines. Additionally, single EOLs can be
@@ -29,7 +31,7 @@ package org.shredzone.commons.text.filter;
  *
  * @author Richard "Shred" Körber
  */
-public class ParagraphFilter extends ProcessorTextFilter {
+public class ParagraphFilter implements TextFilter {
 
     private boolean foldLines = true;
 
@@ -45,22 +47,24 @@ public class ParagraphFilter extends ProcessorTextFilter {
     }
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        text.insert(end, "</p>").insert(start, "<p>");
+    public CharSequence apply(CharSequence text) {
+        StringBuilder sb = toStringBuilder(text);
 
-        int max = end + 3 + 4;
-        int ix = start + 3;
+        sb.insert(0, "<p>").append("</p>");
+
+        int max = sb.length() - 3 - 4;
+        int ix = 3;
 
         while (ix < max) {
-            if (text.charAt(ix) == '\n') {
+            if (sb.charAt(ix) == '\n') {
                 int lineEnd = ix + 1;
-                while (lineEnd < max && text.charAt(lineEnd) == '\n') {
+                while (lineEnd < max && sb.charAt(lineEnd) == '\n') {
                     lineEnd++;
                 }
 
                 String replacement = (lineEnd > ix + 1) ? "</p><p>" : (foldLines ? "<br />" : "\n");
 
-                text.replace(ix, lineEnd, replacement);
+                sb.replace(ix, lineEnd, replacement);
 
                 max += replacement.length() - (lineEnd - ix);
                 ix += replacement.length();
@@ -69,7 +73,7 @@ public class ParagraphFilter extends ProcessorTextFilter {
             }
         }
 
-        return max;
+        return sb;
     }
 
 }

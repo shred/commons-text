@@ -36,12 +36,12 @@ public class TextileFilterTest {
         StringBuilder sb = new StringBuilder();
         sb.append("A *bold* text.");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("<p>A <strong>bold</strong> text.</p>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

@@ -49,14 +49,14 @@ public class SmilyFilterTest {
         sb.append("I am happy :-)), yeah!\n");
         sb.append("(Even more happy :-)))");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("Hi! <img src=\"foo/smileys/tongue.png\" alt=\":-P\" />\n");
         expect.append("I am happy <img src=\"foo/smileys/veryhappy.png\" alt=\":-))\" />, yeah!\n");
         expect.append("(Even more happy <img src=\"foo/smileys/veryhappy.png\" alt=\":-))\" />)");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -64,16 +64,16 @@ public class SmilyFilterTest {
         StringBuilder sb = new StringBuilder();
         sb.append("There is no smile in here.");
 
-        StringBuilder returned = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("There is no smile in here.");
 
-        Assert.assertEquals(expect.toString(), returned.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
 
         // As the filter will not change the StringBuilder at all, we expect the
         // very same instance back.
-        Assert.assertSame(sb, returned);
+        Assert.assertSame(sb, out);
     }
 
 }

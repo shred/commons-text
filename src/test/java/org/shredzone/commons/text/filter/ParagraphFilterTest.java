@@ -38,13 +38,13 @@ public class ParagraphFilterTest {
         sb.append("A normal double\n\nline feed.\n");
         sb.append("Another\nline feed\n\n\ntripled.");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("<p>A normal double</p><p>line feed.\n");
         expect.append("Another\nline feed</p><p>tripled.</p>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -56,13 +56,13 @@ public class ParagraphFilterTest {
         sb.append("A normal double\n\nline feed.\n");
         sb.append("Another\nline feed\n\n\ntripled.");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("<p>A normal double</p><p>line feed.<br />");
         expect.append("Another<br />line feed</p><p>tripled.</p>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

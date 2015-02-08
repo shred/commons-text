@@ -19,27 +19,48 @@
  */
 package org.shredzone.commons.text;
 
+import java.util.function.Function;
+
 /**
  * A text filter modifies a text in a defined manner. It should be highly optimized for
  * speed.
  * <p>
  * Text filters are thread safe unless stated otherwise.
+ * <p>
+ * Text filters are stateless unless stated otherwise.
  *
  * @author Richard "Shred" Körber
  */
-public interface TextFilter {
+@FunctionalInterface
+public interface TextFilter extends Function<CharSequence, CharSequence> {
 
     /**
-     * Filters a text. The result is returned in a {@link StringBuilder}. Depending on the
-     * implementation, the returned {@link StringBuilder} may be the one that was passed
-     * in (with modified contents), or a new {@link StringBuilder} instance.
+     * Applies the filter on a {@link CharSequence} and returns a new {@link CharSequence}
+     * with the modified text.
      *
      * @param text
-     *            {@link StringBuilder} with the contents to be filtered. Contents
-     *            <em>may</em> have changed after invocation, and should not be used any
-     *            more.
-     * @return {@link StringBuilder} with the filtered text.
+     *            {@link CharSequence} with the contents to be filtered. If this is a
+     *            {@link StringBuilder} instance, its contents <em>may</em> have changed
+     *            after invocation, and this instance should not be used any more.
+     * @return {@link CharSequence} with the filtered text.
      */
-    StringBuilder filter(StringBuilder text);
+    @Override
+    CharSequence apply(CharSequence t);
+
+    /**
+     * Returns a {@link StringBuilder} for the given {@link CharSequence}. If the
+     * {@link CharSequence} is a {@link StringBuilder} instance, it will be reused.
+     *
+     * @param text
+     *            {@link CharSequence} to get a {@link StringBuilder} from
+     * @return {@link StringBuilder} instance
+     */
+    default StringBuilder toStringBuilder(CharSequence text) {
+        if (text instanceof StringBuilder) {
+            return (StringBuilder) text;
+        } else {
+            return new StringBuilder(text);
+        }
+    }
 
 }

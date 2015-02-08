@@ -35,11 +35,9 @@ public class KeepFilterTest {
 
         String original = "&Test <i>text</i> &\n ein \"quote\" << <& &<";
 
-        StringBuilder sb = new StringBuilder(original);
+        CharSequence out = filter.apply(original);
 
-        sb = filter.filter(sb);
-
-        Assert.assertEquals(original, sb.toString());
+        Assert.assertEquals(original, out.toString());
     }
 
 }

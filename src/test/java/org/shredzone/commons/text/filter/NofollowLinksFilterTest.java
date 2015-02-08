@@ -38,14 +38,14 @@ public class NofollowLinksFilterTest {
         sb.append("This is another <a href=\"https://www.link.example/to/\">https://www.link.example/to/</a> a directory.");
         sb.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\">ftp://ftp.foobar.example/file.png</a>");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" rel=\"nofollow\">http://www.link.example/to/somewhere.gif</a>.");
         expect.append("This is another <a href=\"https://www.link.example/to/\" rel=\"nofollow\">https://www.link.example/to/</a> a directory.");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" rel=\"nofollow\">ftp://ftp.foobar.example/file.png</a>");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

@@ -19,7 +19,7 @@
  */
 package org.shredzone.commons.text.filter;
 
-import java.io.StringWriter;
+import java.io.CharArrayWriter;
 import java.io.Writer;
 
 import org.eclipse.mylyn.wikitext.core.parser.Attributes;
@@ -60,10 +60,10 @@ public class TextileFilter implements TextFilter {
      * versions.
      *
      * @param writer
-     *            {@link StringWriter} to write the HTML output to
+     *            {@link Writer} to write the HTML output to
      * @return {@link DocumentBuilder} to be used for the markup parser
      */
-    protected DocumentBuilder createDocumentBuilder(StringWriter writer) {
+    protected DocumentBuilder createDocumentBuilder(Writer writer) {
         if (analyzer != null) {
             return new LinkAnalyzingHtmlDocumentBuilder(writer, analyzer);
         } else {
@@ -74,14 +74,14 @@ public class TextileFilter implements TextFilter {
     }
 
     @Override
-    public StringBuilder filter(StringBuilder text) {
-        StringWriter writer = new StringWriter();
+    public CharSequence apply(CharSequence text) {
+        CharArrayWriter writer = new CharArrayWriter();
 
         MarkupParser parser = new MarkupParser(new TextileLanguage());
         parser.setBuilder(createDocumentBuilder(writer));
         parser.parse(text.toString());
 
-        return new StringBuilder(writer.toString());
+        return writer.toString();
     }
 
     /**

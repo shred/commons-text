@@ -19,27 +19,31 @@
  */
 package org.shredzone.commons.text.filter;
 
+import org.shredzone.commons.text.TextFilter;
+
 /**
  * Escapes a plain text so it can be safely used in HTML. '&lt;', '&amp;' and '&quot;' are
  * replaced by their respective HTML entities.
  *
  * @author Richard "Shred" Körber
  */
-public class HtmlEscapeFilter extends ProcessorTextFilter {
+public class HtmlEscapeFilter implements TextFilter {
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        int ix = start;
-        int max = end;
+    public CharSequence apply(CharSequence text) {
+        StringBuilder sb = toStringBuilder(text);
+
+        int ix = 0;
+        int max = sb.length();
         while (ix < max) {
-            switch (text.charAt(ix)) {
-                case '<': text.replace(ix, ix + 1, "&lt;");   ix += 4; max += 3; break;
-                case '&': text.replace(ix, ix + 1, "&amp;");  ix += 5; max += 4; break;
-                case '"': text.replace(ix, ix + 1, "&quot;"); ix += 6; max += 5; break;
+            switch (sb.charAt(ix)) {
+                case '<': sb.replace(ix, ix + 1, "&lt;");   ix += 4; max += 3; break;
+                case '&': sb.replace(ix, ix + 1, "&amp;");  ix += 5; max += 4; break;
+                case '"': sb.replace(ix, ix + 1, "&quot;"); ix += 6; max += 5; break;
                 default: ix++;
             }
         }
-        return max;
+        return sb;
     }
 
 }

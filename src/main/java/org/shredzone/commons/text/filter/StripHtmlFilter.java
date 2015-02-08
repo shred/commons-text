@@ -21,6 +21,8 @@ package org.shredzone.commons.text.filter;
 
 import java.util.regex.Pattern;
 
+import org.shredzone.commons.text.TextFilter;
+
 /**
  * A filter that strips HTML markup from a text.
  * <p>
@@ -33,7 +35,7 @@ import java.util.regex.Pattern;
  *
  * @author Richard "Shred" Körber
  */
-public class StripHtmlFilter extends ProcessorTextFilter {
+public class StripHtmlFilter implements TextFilter {
 
     // Inline tags that do not need to be replaced by a whitespace
     private static final Pattern INLINE_TAGS = Pattern.compile("code|em|strong|samp|" +
@@ -41,28 +43,30 @@ public class StripHtmlFilter extends ProcessorTextFilter {
             "sup|sub|span|img", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        int ix = start;
-        int max = end;
+    public CharSequence apply(CharSequence text) {
+        StringBuilder sb = toStringBuilder(text);
+
+        int ix = 0;
+        int max = sb.length();
         boolean lastWhitespace = false;
 
         while (ix < max) {
-            if (text.charAt(ix) == '<') {
+            if (sb.charAt(ix) == '<') {
                 int endPos = ix + 1;
-                while (endPos < max && text.charAt(endPos) != '>') {
+                while (endPos < max && sb.charAt(endPos) != '>') {
                     endPos++;
                 }
                 if (endPos == max) {
-                    return max;
+                    return sb;
                 }
 
-                boolean isInline = isInline(text, ix, endPos + 1);
+                boolean isInline = isInline(sb, ix, endPos + 1);
 
-                text.delete(ix, endPos + 1);
+                sb.delete(ix, endPos + 1);
                 max -= endPos + 1 - ix;
 
-                if (!isInline && ix > 0 && !Character.isWhitespace(text.charAt(ix - 1))) {
-                    text.insert(ix, ' ');
+                if (!isInline && ix > 0 && !Character.isWhitespace(sb.charAt(ix - 1))) {
+                    sb.insert(ix, ' ');
                     ix++;
                     max++;
                     lastWhitespace = true;
@@ -75,10 +79,10 @@ public class StripHtmlFilter extends ProcessorTextFilter {
 
         // Trim trailing whitespace
         if (lastWhitespace) {
-            text.deleteCharAt(--max);
+            sb.deleteCharAt(--max);
         }
 
-        return max;
+        return sb;
     }
 
     /**

@@ -19,12 +19,15 @@
  */
 package org.shredzone.commons.text.filter;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.shredzone.commons.text.TextFilter;
 
 /**
  * A filter that simplifies a HTML text. Only a given set of HTML tags (and attributes)
@@ -35,12 +38,12 @@ import java.util.regex.Pattern;
  *
  * @author Richard "Shred" Körber
  */
-public class SimplifyHtmlFilter extends ProcessorTextFilter {
+public class SimplifyHtmlFilter implements TextFilter {
 
     private static final Pattern TAG_OPEN = Pattern.compile("<(\\w+)\\s*(.*?)\\s*(/?)>");
     private static final Pattern TAG_CLOSE = Pattern.compile("</(\\w+)\\s*>");
 
-    private Map<String, Set<String>> acceptedTags = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> acceptedTags = new HashMap<>();
 
     /**
      * Adds a tag that is accepted by this filter, with all its attributes.
@@ -49,7 +52,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
      *            HTML tag that is accepted (without angle brackets, e.g. "strong")
      */
     public void addAcceptedTag(String tag) {
-        acceptedTags.put(tag.toLowerCase(), null);
+        addAcceptedTag(tag, (String[]) null);
     }
 
     /**
@@ -62,37 +65,38 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
      */
     public void addAcceptedTag(String tag, String... attributes) {
         if (attributes == null || attributes.length == 0) {
-            addAcceptedTag(tag);
+            acceptedTags.put(tag.toLowerCase(), null);
             return;
         }
 
-        Set<String> attributeSet = new HashSet<String>(attributes.length);
-        for (String attr : attributes) {
-            attributeSet.add(attr.toLowerCase());
-        }
+        Set<String> attributeSet = Arrays.stream(attributes)
+            .map(String::toLowerCase)
+            .collect(Collectors.toSet());
 
         acceptedTags.put(tag.toLowerCase(), attributeSet);
     }
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        int ix = start;
-        int max = end;
+    public CharSequence apply(CharSequence text) {
+        StringBuilder sb = toStringBuilder(text);
+
+        int ix = 0;
+        int max = sb.length();
 
         while (ix < max) {
-            if (text.charAt(ix) == '<') {
+            if (sb.charAt(ix) == '<') {
                 int endPos = ix + 1;
-                while (endPos < text.length() && text.charAt(endPos) != '>') {
+                while (endPos < sb.length() && sb.charAt(endPos) != '>') {
                     endPos++;
                 }
                 endPos = Math.min(endPos + 1, max);
-                String replacement = processTag(text.subSequence(ix, endPos));
+                String replacement = processTag(sb.subSequence(ix, endPos));
                 if (replacement != null) {
-                    text.replace(ix, endPos, replacement);
+                    sb.replace(ix, endPos, replacement);
                     max += replacement.length() - (endPos - ix);
                     ix += replacement.length();
                 } else {
-                    text.delete(ix, endPos);
+                    sb.delete(ix, endPos);
                     max -= endPos - ix;
                 }
             } else {
@@ -100,7 +104,7 @@ public class SimplifyHtmlFilter extends ProcessorTextFilter {
             }
         }
 
-        return max;
+        return sb;
     }
 
     /**

@@ -19,27 +19,32 @@
  */
 package org.shredzone.commons.text.filter;
 
+import org.shredzone.commons.text.TextFilter;
+
 /**
  * A filter that normalizes EOL markers. CR and CRLF are converted to LF.
  *
  * @author Richard "Shred" Körber
  */
-public class NormalizeFilter extends ProcessorTextFilter {
+public class NormalizeFilter implements TextFilter {
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        int max = end;
-        for (int ix = start; ix < max; ix++) {
-            if (text.charAt(ix) == '\r') {
-                if ((ix + 1) < text.length() && text.charAt(ix + 1) == '\n') {
-                    text.deleteCharAt(ix);
+    public CharSequence apply(CharSequence text) {
+        StringBuilder sb = toStringBuilder(text);
+
+        int max = sb.length();
+        for (int ix = 0; ix < max; ix++) {
+            if (sb.charAt(ix) == '\r') {
+                if ((ix + 1) < sb.length() && sb.charAt(ix + 1) == '\n') {
+                    sb.deleteCharAt(ix);
                     max--;
                 } else {
-                    text.setCharAt(ix, '\n');
+                    sb.setCharAt(ix, '\n');
                 }
             }
         }
-        return max;
+
+        return sb;
     }
 
 }

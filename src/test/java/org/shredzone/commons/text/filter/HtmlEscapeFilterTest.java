@@ -33,16 +33,13 @@ public class HtmlEscapeFilterTest {
     public void filterTest() {
         HtmlEscapeFilter filter = new HtmlEscapeFilter();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("&Test <i>text</i> &\n with a \"quote\" << <& &<");
-
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply("&Test <i>text</i> &\n with a \"quote\" << <& &<");
 
         StringBuilder expect = new StringBuilder();
         expect.append("&amp;Test &lt;i>text&lt;/i> &amp;\n");
         expect.append(" with a &quot;quote&quot; &lt;&lt; &lt;&amp; &amp;&lt;");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

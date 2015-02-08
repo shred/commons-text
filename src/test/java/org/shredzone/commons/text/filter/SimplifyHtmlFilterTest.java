@@ -49,7 +49,8 @@ public class SimplifyHtmlFilterTest {
         sb.append("<img src=type1.gif alt>");
         sb.append("<img src='type\"2.gif' alt=f\"oo noscale>");
         sb.append("<img     src = \"type3.gif\"  alt=\"bar foo\" noscale=\"no\">");
-        sb = filter.filter(sb);
+
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is <b>a bad content</b>.");
@@ -59,7 +60,7 @@ public class SimplifyHtmlFilterTest {
         expect.append("<img src=\"type&quot;2.gif\" alt=\"f&quot;oo\">");
         expect.append("<img src=\"type3.gif\" alt=\"bar foo\">");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -67,13 +68,13 @@ public class SimplifyHtmlFilterTest {
         StringBuilder sb = new StringBuilder();
         sb.append(">broken content<br");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         // Incomplete tags at the end are stripped as well
         StringBuilder expect = new StringBuilder();
         expect.append(">broken content");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

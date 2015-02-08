@@ -38,14 +38,14 @@ public class NormalizeFilterTest {
         sb.append("A CRLF\r\nline feed\r\n\r\ndoubled.");
         sb.append("A mac\rline feed\r\rdoubled.");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("A normal double\n\nline feed.\n");
         expect.append("A CRLF\nline feed\n\ndoubled.");
         expect.append("A mac\nline feed\n\ndoubled.");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

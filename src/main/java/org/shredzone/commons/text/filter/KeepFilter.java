@@ -19,16 +19,18 @@
  */
 package org.shredzone.commons.text.filter;
 
+import org.shredzone.commons.text.TextFilter;
+
 /**
  * A simple filter that keeps the text unchanged.
  *
  * @author Richard "Shred" Körber
  */
-public class KeepFilter extends ProcessorTextFilter {
+public class KeepFilter implements TextFilter {
 
     @Override
-    public int process(StringBuilder text, int start, int end) {
-        return end;
+    public CharSequence apply(CharSequence text) {
+        return text;
     }
 
 }

@@ -38,12 +38,12 @@ public class NofollowLinksFilter implements TextFilter {
             Pattern.CASE_INSENSITIVE);
 
     @Override
-    public StringBuilder filter(StringBuilder text) {
+    public CharSequence apply(CharSequence text) {
         Matcher m = HREF_PATTERN.matcher(text);
         if (!m.matches()) {
             return text;
         }
-        return new StringBuilder(m.replaceAll("$1$2 rel=\"nofollow\">"));
+        return m.replaceAll("$1$2 rel=\"nofollow\">");
     }
 
 }

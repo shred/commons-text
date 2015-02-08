@@ -38,13 +38,13 @@ public class StripHtmlFilterTest {
         sb.append("<script>window.alert('Oops!')</script>");
         sb.append("<br /><IMG \nsrc=\"foo.gif\"><img src='foo2.gif'>");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
         expect.append("This is a bad content.");
         expect.append(" window.alert('Oops!')");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
     @Test
@@ -54,13 +54,13 @@ public class StripHtmlFilterTest {
         StringBuilder sb = new StringBuilder();
         sb.append(">broken content<br");
 
-        sb = filter.filter(sb);
+        CharSequence out = filter.apply(sb);
 
         // Incomplete tags at the end are stripped as well
         StringBuilder expect = new StringBuilder();
         expect.append(">broken content<br");
 
-        Assert.assertEquals(expect.toString(), sb.toString());
+        Assert.assertEquals(expect.toString(), out.toString());
     }
 
 }

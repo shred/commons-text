@@ -25,8 +25,8 @@ import java.util.regex.Pattern;
 import org.shredzone.commons.text.TextFilter;
 
 /**
- * A filter that detects links in a text, and creates an HTML &lt;a> tag around each link.
- * http, https and ftp protocols are detected.
+ * A filter that detects links in a text, and creates an HTML &lt;a&gt; tag around each
+ * link. http, https and ftp protocols are detected.
  *
  * @author Richard "Shred" Körber
  */

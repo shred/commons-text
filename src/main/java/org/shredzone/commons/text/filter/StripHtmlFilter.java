@@ -31,8 +31,9 @@ import org.shredzone.commons.text.TextFilter;
  * whitespace (unless there already was a whitespace before the tag), while inline tags
  * are just removed.
  * <p>
- * Rationale: "foo&lt;br>bar" is converted to "foo bar", while "foo&lt;i>bar&lt;/i>" is
- * converted to "foobar", similar to the way it is displayed in a web browser.
+ * Rationale: "foo&lt;br&gt;bar" is converted to "foo bar", while
+ * "foo&lt;i&gt;bar&lt;/i&gt;" is converted to "foobar", similar to the way it is
+ * displayed in a web browser.
  *
  * @author Richard "Shred" Körber
  */

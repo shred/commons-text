@@ -38,7 +38,7 @@ public interface TextFilter extends Function<CharSequence, CharSequence> {
      * Applies the filter on a {@link CharSequence} and returns a new {@link CharSequence}
      * with the modified text.
      *
-     * @param text
+     * @param t
      *            {@link CharSequence} with the contents to be filtered. If this is a
      *            {@link StringBuilder} instance, its contents <em>may</em> have changed
      *            after invocation, and this instance should not be used any more.

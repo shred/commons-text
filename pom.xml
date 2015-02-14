@@ -100,7 +100,7 @@
                 <version>2.8.1</version>
                 <configuration>
                     <links>
-                        <link>http://docs.oracle.com/javase/7/docs/api/</link>
+                        <link>http://docs.oracle.com/javase/8/docs/api/</link>
                     </links>
                     <charset>UTF-8</charset>
                     <linksource>true</linksource>

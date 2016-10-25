@@ -1,4 +1,4 @@
-# commons-text ![build status](https://jenkins.shredzone.net/project/commons-text/builds/status.png?ref=master)
+# commons-text ![build status](https://shredzone.org/badge/commons-text.svg)
 
 A Java library for processing texts.
 
@@ -14,7 +14,7 @@ This software is part of the Shredzone Commons.
 
 ## Documentation
 
-See the [online documentation](http://www.shredzone.org/maven/commons-text/) for examples.
+See the [online documentation](https://shredzone.org/maven/commons-text/) for examples.
 
 ## Contribute
 

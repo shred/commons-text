@@ -35,6 +35,7 @@ The filters can be roughly divided into two groups: one that expects plaintext a
 * `KeepFilter`: Keeps the text unchanged.
 * `HtmlEscapeFilter`: Escapes all characters with special meaning in HTML. This is a basic text to HTML converter.
 * `LinkToUrlFilter`: Detects http, https and ftp links within a plain text, and converts them to HTML links. Optionally, rel="nofollow" can be added to each link, and a link target can be chosen.
+* `MarkdownFilter`: Converts [CommonMark](http://commonmark.org/) markdown to HTML. Optionally, a `LinkAnalyzer` can be applied.
 * `NormalizeFilter`: Converts Windows (CRLF) and Mac (CR) line endings to Un*x line endings (LF).
 * `ParagraphFilter`: Surrounds all paragraphs with &lt;p> tags. A paragraph ends with a double line feed. Additionally, &lt;br> tags are added at each simple line feed. Can be used for simply paragraphing a text in HTML.
 * `SmilyFilter`: Detects a set of text emoticons and replaces them by &lt;img> tags.

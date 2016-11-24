@@ -31,6 +31,7 @@
         </developer>
     </developers>
     <properties>
+        <commonmark.version>0.7.1</commonmark.version>
         <wikitext.version>0.9.4.I20090220-1600-e3x</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -110,6 +111,11 @@
         </plugins>
     </reporting>
     <dependencies>
+        <dependency>
+            <groupId>com.atlassian.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.mylyn.wikitext</groupId>
             <artifactId>wikitext</artifactId>

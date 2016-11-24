@@ -9,7 +9,7 @@ This software is part of the Shredzone Commons.
 * Convert HTML to text, text to HTML etc.
 * Secure: Helps dealing with user input, strips HTML or limits tag usage
 * Designed for quick conversion and low memory footprint
-* Contains a textile to HTML converter
+* Contains a textile and markdown to HTML converter
 * Requires Java 8 or higher (up to v1.0: Java 6)
 
 ## Documentation

@@ -87,7 +87,7 @@ public class TextileFilter implements TextFilter {
     /**
      * A {@link HtmlDocumentBuilder} that uses a {@link LinkAnalyzer}.
      */
-    public static class LinkAnalyzingHtmlDocumentBuilder extends HtmlDocumentBuilder {
+    private static class LinkAnalyzingHtmlDocumentBuilder extends HtmlDocumentBuilder {
 
         private final LinkAnalyzer analyzer;
 
@@ -98,25 +98,20 @@ public class TextileFilter implements TextFilter {
         }
 
         @Override
-        public void charactersUnescaped(String literal) {
-            super.charactersUnescaped(literal);
-        }
-
-        @Override
         public void link(Attributes attributes, String hrefOrHashName, String text) {
-            hrefOrHashName = analyzer.linkUrl(hrefOrHashName);
+            String resolvedHrefOrHashName = analyzer.linkUrl(hrefOrHashName);
             String type = analyzer.linkType(hrefOrHashName);
             if (type != null) {
                 attributes.setCssClass(type);
             }
-            super.link(attributes, hrefOrHashName, text);
+            super.link(attributes, resolvedHrefOrHashName, text);
         }
 
         @Override
         public void imageLink(Attributes linkAttributes, Attributes imageAttributes, String href, String imageUrl) {
-            href = analyzer.linkUrl(href);
-            imageUrl = analyzer.imageUrl(imageUrl);
-            super.imageLink(linkAttributes, imageAttributes, href, imageUrl);
+            String resolvedHref = analyzer.linkUrl(href);
+            String resolvedImageUrl = analyzer.imageUrl(imageUrl);
+            super.imageLink(linkAttributes, imageAttributes, resolvedHref, resolvedImageUrl);
         }
 
         @Override

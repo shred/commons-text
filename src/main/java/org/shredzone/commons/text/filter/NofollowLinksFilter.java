@@ -33,7 +33,7 @@ import org.shredzone.commons.text.TextFilter;
  */
 public class NofollowLinksFilter implements TextFilter {
 
-    private final static Pattern HREF_PATTERN = Pattern.compile(
+    private static final Pattern HREF_PATTERN = Pattern.compile(
             "(.*?)(<a[^>]+?href\\s*=\\s*[\"']?(?:https?|ftp|mailto|file):.+?)>",
             Pattern.CASE_INSENSITIVE);
 

@@ -84,7 +84,7 @@ public class SimplifyHtmlFilter implements TextFilter {
 
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuffer sb = new StringBuffer(text.length() * 11 / 10);
+        StringBuffer sb = new StringBuffer(text.length() * 11 / 10); //NOSONAR: Matcher requires StringBuffer
 
         Matcher m = TAG_PATTERN.matcher(text);
         while (m.find()) {
@@ -114,7 +114,7 @@ public class SimplifyHtmlFilter implements TextFilter {
                     StringBuilder result = new StringBuilder();
                     result.append('<').append(tag);
                     processAttributes(attr, result, acceptedTags.get(tag));
-                    if (closing.equals("/")) {
+                    if ("/".equals(closing)) {
                         result.append(" /");
                     }
                     result.append('>');
@@ -163,7 +163,9 @@ public class SimplifyHtmlFilter implements TextFilter {
 
             while (pos < max) {
                 char ch = attr.charAt(pos);
-                if (!Character.isLetterOrDigit(ch)) break;
+                if (!Character.isLetterOrDigit(ch)) {
+                    break;
+                }
                 attrName.append(ch);
                 pos++;
             }

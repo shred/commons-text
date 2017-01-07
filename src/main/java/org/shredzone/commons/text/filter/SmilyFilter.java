@@ -73,7 +73,7 @@ public class SmilyFilter implements TextFilter {
     public void setBaseUrl(String url) {
         this.baseUrl = Objects.requireNonNull(url);
         if (baseUrl.length() > 0 && !baseUrl.endsWith("/")) {
-            baseUrl += '/';
+            baseUrl += "/";
         }
     }
 
@@ -88,7 +88,7 @@ public class SmilyFilter implements TextFilter {
                 .map(Pattern::quote)
                 .collect(joining("|"));
 
-        smilyPattern = Pattern.compile(pattern.toString(), Pattern.DOTALL);
+        smilyPattern = Pattern.compile(pattern, Pattern.DOTALL);
     }
 
 

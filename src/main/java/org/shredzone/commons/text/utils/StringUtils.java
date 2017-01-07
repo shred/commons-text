@@ -59,8 +59,10 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isLeadingDigit(CharSequence text, int pos) {
-        if (pos <= 0) return false;
-        return (Character.isDigit(text.charAt(pos - 1)));
+        if (pos <= 0) {
+            return false;
+        }
+        return Character.isDigit(text.charAt(pos - 1));
     }
 
     /**
@@ -74,8 +76,10 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isTrailingDigit(CharSequence text, int pos) {
-        if (pos + 1 >= text.length()) return false;
-        return (Character.isDigit(text.charAt(pos + 1)));
+        if (pos + 1 >= text.length()) {
+            return false;
+        }
+        return Character.isDigit(text.charAt(pos + 1));
     }
 
     /**
@@ -91,7 +95,9 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isLeadingChar(CharSequence text, int pos, char ch) {
-        if (pos <= 0) return false;
+        if (pos <= 0) {
+            return false;
+        }
         return text.charAt(pos - 1) == ch;
     }
 
@@ -108,7 +114,9 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isTrailingChar(CharSequence text, int pos, char ch) {
-        if (pos + 1 >= text.length()) return false;
+        if (pos + 1 >= text.length()) {
+            return false;
+        }
         return text.charAt(pos + 1) == ch;
     }
 
@@ -125,7 +133,9 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isLeadingString(CharSequence text, int pos, CharSequence leading) {
-        if (pos < leading.length()) return false;
+        if (pos < leading.length()) {
+            return false;
+        }
         return leading.equals(text.subSequence(pos - leading.length(), pos));
     }
 
@@ -140,8 +150,10 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isLeadingSpace(CharSequence text, int pos) {
-        if (pos <= 0) return false;
-        return (Character.isWhitespace(text.charAt(pos - 1)));
+        if (pos <= 0) {
+            return false;
+        }
+        return Character.isWhitespace(text.charAt(pos - 1));
     }
 
     /**
@@ -155,8 +167,10 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isTrailingSpace(CharSequence text, int pos) {
-        if (pos + 1 >= text.length()) return false;
-        return (Character.isWhitespace(text.charAt(pos + 1)));
+        if (pos + 1 >= text.length()) {
+            return false;
+        }
+        return Character.isWhitespace(text.charAt(pos + 1));
     }
 
     /**
@@ -170,9 +184,11 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isStartOfLine(CharSequence text, int pos) {
-        if (pos == 0) return true;
+        if (pos == 0) {
+            return true;
+        }
         char ch = text.charAt(pos - 1);
-        return (ch == '\n' || ch == '\r');
+        return ch == '\n' || ch == '\r';
     }
 
     /**
@@ -186,9 +202,11 @@ public final class StringUtils {
      * @return result of the test
      */
     public static boolean isEndOfLine(CharSequence text, int pos) {
-        if (pos >= text.length()) return true;
+        if (pos >= text.length()) {
+            return true;
+        }
         char ch = text.charAt(pos);
-        return (ch == '\n' || ch == '\r');
+        return ch == '\n' || ch == '\r';
     }
 
     /**

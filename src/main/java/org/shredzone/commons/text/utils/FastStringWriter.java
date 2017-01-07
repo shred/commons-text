@@ -80,6 +80,9 @@ public class FastStringWriter extends Writer {
         return sb.toString();
     }
 
+    /**
+     * Returns a {@link StringBuilder} with the contents.
+     */
     public StringBuilder toStringBuilder() {
         return sb;
     }

@@ -79,8 +79,12 @@ public class LinkToUrlFilter implements TextFilter {
      */
     private void updateTag() {
         StringBuilder sb = new StringBuilder("$1<a href=\"$2\"");
-        if (!follow) sb.append(" rel=\"nofollow\"");
-        if (target != null) sb.append(" target=\"").append(target).append('"');
+        if (!follow) {
+            sb.append(" rel=\"nofollow\"");
+        }
+        if (target != null) {
+            sb.append(" target=\"").append(target).append('"');
+        }
         sb.append(">$2</a>");
         tag = sb.toString();
     }

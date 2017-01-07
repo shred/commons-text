@@ -48,7 +48,7 @@ public class StripHtmlFilter implements TextFilter {
 
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer(); //NOSONAR: Matcher requires StringBuffer
 
         Matcher m = TAG_PATTERN.matcher(text);
         while (m.find()) {

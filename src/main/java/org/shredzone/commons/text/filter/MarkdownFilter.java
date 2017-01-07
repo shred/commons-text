@@ -26,8 +26,6 @@ import org.commonmark.node.Link;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.AttributeProvider;
-import org.commonmark.renderer.html.AttributeProviderContext;
-import org.commonmark.renderer.html.AttributeProviderFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.shredzone.commons.text.LinkAnalyzer;
 import org.shredzone.commons.text.TextFilter;
@@ -90,12 +88,7 @@ public class MarkdownFilter implements TextFilter {
     protected HtmlRenderer.Builder createHtmlRendererBuilder() {
         HtmlRenderer.Builder builder = HtmlRenderer.builder();
         if (analyzer != null) {
-            builder.attributeProviderFactory(new AttributeProviderFactory() {
-                @Override
-                public AttributeProvider create(AttributeProviderContext context) {
-                    return new LinkAnalyzingAttributeProvider(analyzer);
-                }
-            });
+            builder.attributeProviderFactory(context -> new LinkAnalyzingAttributeProvider(analyzer));
         }
         return builder;
     }
@@ -104,6 +97,10 @@ public class MarkdownFilter implements TextFilter {
      * An {@link AttributeProvider} that uses {@link LinkAnalyzer}.
      */
     private static class LinkAnalyzingAttributeProvider implements AttributeProvider {
+        private static final String HTML_SRC = "src";
+        private static final String HTML_HREF = "href";
+        private static final String HTML_CLASS = "class";
+
         private final LinkAnalyzer analyzer;
 
         public LinkAnalyzingAttributeProvider(LinkAnalyzer analyzer) {
@@ -113,21 +110,21 @@ public class MarkdownFilter implements TextFilter {
         @Override
         public void setAttributes(Node node, Map<String, String> attributes) {
             if (node instanceof Image) {
-                String src = attributes.get("src");
+                String src = attributes.get(HTML_SRC);
                 if (src != null) {
-                    attributes.put("src", analyzer.imageUrl(src));
+                    attributes.put(HTML_SRC, analyzer.imageUrl(src));
                 }
             } else if (node instanceof Link) {
-                String href = attributes.get("href");
+                String href = attributes.get(HTML_HREF);
                 if (href != null) {
-                    attributes.put("href", analyzer.linkUrl(href));
+                    attributes.put(HTML_HREF, analyzer.linkUrl(href));
                     String type = analyzer.linkType(href);
                     if (type != null) {
-                        String cssClass = attributes.get("class");
+                        String cssClass = attributes.get(HTML_CLASS);
                         if (cssClass != null) {
-                            attributes.put("class", cssClass + ' ' + type);
+                            attributes.put(HTML_CLASS, cssClass + ' ' + type);
                         } else {
-                            attributes.put("class", type);
+                            attributes.put(HTML_CLASS, type);
                         }
                     }
                 }

@@ -29,7 +29,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.shredzone.commons.text.TextFilter;
-import org.shredzone.commons.text.utils.StringUtils;
 
 /**
  * A filter that detects smily sequences, and replaces them with an image. The filter
@@ -91,6 +90,9 @@ public class SmilyFilter implements TextFilter {
         smilyPattern = Pattern.compile(pattern, Pattern.DOTALL);
     }
 
+    private String escapeHtml(String text) {
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace("\"", "&quot;");
+    }
 
     @Override
     public CharSequence apply(CharSequence text) {
@@ -112,7 +114,7 @@ public class SmilyFilter implements TextFilter {
             if (smilyUrl != null) {
                 result.append("<img src=\"").append(baseUrl).append(smilyUrl).append('"');
                 // TODO: Add optional class/style and width/height attributes
-                result.append(" alt=\"").append(StringUtils.escapeHtml(smily)).append('"');
+                result.append(" alt=\"").append(escapeHtml(smily)).append('"');
                 result.append(" />");
 
             } else {

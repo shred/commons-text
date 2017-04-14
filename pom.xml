@@ -31,7 +31,7 @@
         </developer>
     </developers>
     <properties>
-        <commonmark.version>0.7.1</commonmark.version>
+        <commonmark.version>0.9.0</commonmark.version>
         <wikitext.version>0.9.4.I20090220-1600-e3x</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

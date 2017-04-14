@@ -108,7 +108,7 @@ public class MarkdownFilter implements TextFilter {
         }
 
         @Override
-        public void setAttributes(Node node, Map<String, String> attributes) {
+        public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
             if (node instanceof Image) {
                 String src = attributes.get(HTML_SRC);
                 if (src != null) {

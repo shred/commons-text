@@ -1,4 +1,4 @@
-# commons-text ![build status](https://shredzone.org/badge/commons-text.svg) ![maven central](https://maven-badges.herokuapp.com/maven-central/org.shredzone.commons/commons-text/badge.svg)
+# commons-text ![build status](https://shredzone.org/badge/commons-text.svg) ![maven central](https://shredzone.org/maven-central/org.shredzone.commons/commons-text/badge.svg)
 
 A Java library for processing texts.
 

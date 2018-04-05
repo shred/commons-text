@@ -48,6 +48,21 @@ public class StripHtmlFilterTest {
     }
 
     @Test
+    public void attributeTest() {
+        StripHtmlFilter filter = new StripHtmlFilter();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("An <img src=\"foo.jpg\" title=\"with &lt;em>nested&lt;em> HTML\"> image");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("An  image");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
     public void brokenTest() {
         StripHtmlFilter filter = new StripHtmlFilter();
 

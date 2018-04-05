@@ -44,7 +44,7 @@ public class StripHtmlFilter implements TextFilter {
             "kbd|var|cite|dfn|abbr|acronym|q|del|ins|bdo|b|i|u|tt|s|strike|big|small|" +
             "sup|sub|span|img", Pattern.CASE_INSENSITIVE);
 
-    private static final Pattern TAG_PATTERN = Pattern.compile("</?([a-zA-Z0-9]+)[^>]*>", Pattern.DOTALL);
+    private static final Pattern TAG_PATTERN = Pattern.compile("</?([a-zA-Z0-9]+)(?:\\\"[^\"]*\\\"|[^>])*>", Pattern.DOTALL);
 
     @Override
     public CharSequence apply(CharSequence text) {

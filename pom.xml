@@ -31,8 +31,8 @@
         </developer>
     </developers>
     <properties>
-        <wikitext.version>0.9.4.I20090220-1600-e3x</wikitext.version>
         <commonmark.version>0.11.0</commonmark.version>
+        <wikitext.version>3.0.23</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -117,13 +117,13 @@
             <version>${commonmark.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.mylyn.wikitext</groupId>
-            <artifactId>wikitext</artifactId>
+            <groupId>org.eclipse.mylyn.docs</groupId>
+            <artifactId>org.eclipse.mylyn.wikitext</artifactId>
             <version>${wikitext.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.mylyn.wikitext</groupId>
-            <artifactId>wikitext.textile</artifactId>
+            <groupId>org.eclipse.mylyn.docs</groupId>
+            <artifactId>org.eclipse.mylyn.wikitext.textile</artifactId>
             <version>${wikitext.version}</version>
         </dependency>
         <dependency>

@@ -23,6 +23,7 @@ import java.io.Writer;
 
 import org.eclipse.mylyn.wikitext.parser.Attributes;
 import org.eclipse.mylyn.wikitext.parser.DocumentBuilder;
+import org.eclipse.mylyn.wikitext.parser.LinkAttributes;
 import org.eclipse.mylyn.wikitext.parser.MarkupParser;
 import org.eclipse.mylyn.wikitext.parser.builder.HtmlDocumentBuilder;
 import org.eclipse.mylyn.wikitext.textile.TextileLanguage;
@@ -98,13 +99,17 @@ public class TextileFilter implements TextFilter {
         }
 
         @Override
-        public void link(Attributes attributes, String hrefOrHashName, String text) {
-            String resolvedHrefOrHashName = analyzer.linkUrl(hrefOrHashName);
-            String type = analyzer.linkType(hrefOrHashName);
-            if (type != null) {
-                attributes.setCssClass(type);
+        public void beginSpan(SpanType type, Attributes attributes) {
+            if (type.equals(SpanType.LINK) && attributes instanceof LinkAttributes) {
+                LinkAttributes la = (LinkAttributes) attributes;
+
+                la.setHref(analyzer.linkUrl(la.getHref()));
+                String linkType = analyzer.linkType(la.getHref());
+                if (linkType != null) {
+                    la.setCssClass(linkType);
+                }
             }
-            super.link(attributes, resolvedHrefOrHashName, text);
+            super.beginSpan(type, attributes);
         }
 
         @Override

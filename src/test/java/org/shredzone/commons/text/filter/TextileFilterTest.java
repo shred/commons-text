@@ -21,6 +21,7 @@ package org.shredzone.commons.text.filter;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.commons.text.LinkAnalyzer;
 
 /**
  * Unit test for {@link TextileFilterTest}.
@@ -40,6 +41,43 @@ public class TextileFilterTest {
 
         StringBuilder expect = new StringBuilder();
         expect.append("<p>A <strong>bold</strong> text.</p>");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void linkAnalyzerTest() {
+        LinkAnalyzer analyzer = new LinkAnalyzer() {
+            @Override
+            public String linkUrl(String url) {
+                return url + "?passed";
+            }
+
+            @Override
+            public String linkType(String url) {
+                return "external";
+            }
+
+            @Override
+            public String imageUrl(String url) {
+                return url + "?image";
+            }
+        };
+
+        TextileFilter filter = new TextileFilter();
+        filter.setAnalyzer(analyzer);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("A \"link\":http://example.com/page/1 to somewhere.");
+        sb.append(" !/img/photo.jpeg!");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("<p>");
+        expect.append("A <a href=\"http://example.com/page/1?passed\" class=\"external\">link</a> to somewhere.");
+        expect.append(" <img border=\"0\" src=\"/img/photo.jpeg?image\"/>");
+        expect.append("</p>");
 
         Assert.assertEquals(expect.toString(), out.toString());
     }

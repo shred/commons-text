@@ -21,6 +21,7 @@ package org.shredzone.commons.text.filter;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.shredzone.commons.text.LinkAnalyzer;
 
 /**
  * Unit test for {@link MarkdownFilter}.
@@ -40,6 +41,45 @@ public class MarkdownFilterTest {
 
         StringBuilder expect = new StringBuilder();
         expect.append("<p>A <strong>bold</strong> text.</p>\n");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void linkAnalyzerTest() {
+        LinkAnalyzer analyzer = new LinkAnalyzer() {
+            @Override
+            public String linkUrl(String url) {
+                return url + "?passed";
+            }
+
+            @Override
+            public String linkType(String url) {
+                return "external";
+            }
+
+            @Override
+            public String imageUrl(String url) {
+                return url + "?image";
+            }
+        };
+
+        MarkdownFilter filter = new MarkdownFilter();
+        filter.setAnalyzer(analyzer);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("A [link](http://example.com/page/1) to somewhere.");
+        sb.append(" ![Image](/img/photo.jpeg)");
+
+        CharSequence out = filter.apply(sb);
+
+        System.err.println(out);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("<p>");
+        expect.append("A <a href=\"http://example.com/page/1?passed\" class=\"external\">link</a> to somewhere.");
+        expect.append(" <img src=\"/img/photo.jpeg?image\" alt=\"Image\" />");
+        expect.append("</p>\n");
 
         Assert.assertEquals(expect.toString(), out.toString());
     }

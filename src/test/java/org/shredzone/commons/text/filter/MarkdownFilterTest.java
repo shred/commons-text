@@ -73,13 +73,31 @@ public class MarkdownFilterTest {
 
         CharSequence out = filter.apply(sb);
 
-        System.err.println(out);
-
         StringBuilder expect = new StringBuilder();
         expect.append("<p>");
         expect.append("A <a href=\"http://example.com/page/1?passed\" class=\"external\">link</a> to somewhere.");
         expect.append(" <img src=\"/img/photo.jpeg?image\" alt=\"Image\" />");
         expect.append("</p>\n");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void preClassTest() {
+        MarkdownFilter filter = new MarkdownFilter();
+        filter.setPreClass("prettyprint");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("```java\n");
+        sb.append("System.out.println(\"Hello World\");\n");
+        sb.append("```\n");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("<pre class=\"prettyprint\"><code class=\"language-java\">");
+        expect.append("System.out.println(&quot;Hello World&quot;);\n");
+        expect.append("</code></pre>\n");
 
         Assert.assertEquals(expect.toString(), out.toString());
     }

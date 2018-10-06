@@ -21,6 +21,7 @@ package org.shredzone.commons.text.filter;
 
 import java.util.Map;
 
+import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Image;
 import org.commonmark.node.Link;
 import org.commonmark.node.Node;
@@ -42,6 +43,7 @@ import org.shredzone.commons.text.TextFilter;
 public class MarkdownFilter implements TextFilter {
 
     private LinkAnalyzer analyzer;
+    private String preClass;
 
     /**
      * Sets a {@link LinkAnalyzer} to be used for converting links and image source URLs.
@@ -51,6 +53,18 @@ public class MarkdownFilter implements TextFilter {
      */
     public void setAnalyzer(LinkAnalyzer analyzer) {
         this.analyzer = analyzer;
+    }
+
+    /**
+     * Class name to be added to each fenced code block. This can be used for syntax
+     * highlighters like prettify.
+     *
+     * @param preClass
+     *            Name of the css class to be added to each fenced block.
+     * @since 2.4
+     */
+    public void setPreClass(String preClass) {
+        this.preClass = preClass;
     }
 
     @Override
@@ -90,6 +104,9 @@ public class MarkdownFilter implements TextFilter {
         if (analyzer != null) {
             builder.attributeProviderFactory(context -> new LinkAnalyzingAttributeProvider(analyzer));
         }
+        if (preClass != null) {
+            builder.attributeProviderFactory(context -> new FencedCodeBlockAttributeProvider(preClass));
+        }
         return builder;
     }
 
@@ -128,6 +145,26 @@ public class MarkdownFilter implements TextFilter {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * An {@link AttributeProvider} that adds a css class to all fenced code blocks.
+     */
+    private static class FencedCodeBlockAttributeProvider implements AttributeProvider {
+        private static final String HTML_CLASS = "class";
+
+        private final String preClass;
+
+        public FencedCodeBlockAttributeProvider(String preClass) {
+            this.preClass = preClass;
+        }
+
+        @Override
+        public void setAttributes(Node node, String tagName, Map<String, String> attributes) {
+            if (node instanceof FencedCodeBlock && "pre".equals(tagName)) {
+                attributes.put(HTML_CLASS, preClass);
             }
         }
     }

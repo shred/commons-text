@@ -22,6 +22,8 @@ package org.shredzone.commons.text.filter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -37,6 +39,7 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class StripHtmlFilter implements TextFilter {
 
     // Inline tags that do not need to be replaced by a whitespace

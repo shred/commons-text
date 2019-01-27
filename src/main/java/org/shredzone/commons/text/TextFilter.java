@@ -21,6 +21,9 @@ package org.shredzone.commons.text;
 
 import java.util.function.Function;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * A text filter modifies a text in a defined manner. It should be highly optimized for
  * speed.
@@ -32,6 +35,7 @@ import java.util.function.Function;
  * @author Richard "Shred" Körber
  */
 @FunctionalInterface
+@ParametersAreNonnullByDefault
 public interface TextFilter extends Function<CharSequence, CharSequence> {
 
     /**
@@ -45,7 +49,7 @@ public interface TextFilter extends Function<CharSequence, CharSequence> {
      * @return {@link CharSequence} with the filtered text.
      */
     @Override
-    CharSequence apply(CharSequence t);
+    @Nonnull CharSequence apply(CharSequence t);
 
     /**
      * Returns a {@link StringBuilder} for the given {@link CharSequence}. If the
@@ -55,7 +59,7 @@ public interface TextFilter extends Function<CharSequence, CharSequence> {
      *            {@link CharSequence} to get a {@link StringBuilder} from
      * @return {@link StringBuilder} instance
      */
-    default StringBuilder toStringBuilder(CharSequence text) {
+    default @Nonnull StringBuilder toStringBuilder(CharSequence text) {
         if (text instanceof StringBuilder) {
             return (StringBuilder) text;
         } else {

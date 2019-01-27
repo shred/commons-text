@@ -19,11 +19,16 @@
  */
 package org.shredzone.commons.text;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * Analyzes internal and external links.
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public interface LinkAnalyzer {
 
     /**
@@ -34,7 +39,7 @@ public interface LinkAnalyzer {
      *            URL to be analyzed
      * @return CSS class name, or {@code null} if this is no special link
      */
-    String linkType(String url);
+    String linkType(@Nullable String url);
 
     /**
      * Returns a resolved link.
@@ -43,7 +48,7 @@ public interface LinkAnalyzer {
      *            URL to be analyzed, may be a relative link
      * @return Link to be used, never {@code null}
      */
-    String linkUrl(String url);
+    @Nonnull String linkUrl(String url);
 
     /**
      * Image a resolved image URL.
@@ -52,6 +57,6 @@ public interface LinkAnalyzer {
      *            URL to be analyzed, may be a relative link
      * @return Image URL to be used, never {@code null}
      */
-    String imageUrl(String url);
+    @Nonnull String imageUrl(String url);
 
 }

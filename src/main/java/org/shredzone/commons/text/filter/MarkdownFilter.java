@@ -21,6 +21,10 @@ package org.shredzone.commons.text.filter;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Image;
 import org.commonmark.node.Link;
@@ -40,6 +44,7 @@ import org.shredzone.commons.text.TextFilter;
  * @see <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a>
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class MarkdownFilter implements TextFilter {
 
     private LinkAnalyzer analyzer;
@@ -51,7 +56,7 @@ public class MarkdownFilter implements TextFilter {
      * @param analyzer
      *            {@link LinkAnalyzer} to be used
      */
-    public void setAnalyzer(LinkAnalyzer analyzer) {
+    public void setAnalyzer(@Nullable LinkAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 
@@ -63,7 +68,7 @@ public class MarkdownFilter implements TextFilter {
      *            Name of the css class to be added to each fenced block.
      * @since 2.4
      */
-    public void setPreClass(String preClass) {
+    public void setPreClass(@Nullable String preClass) {
         this.preClass = preClass;
     }
 
@@ -83,7 +88,7 @@ public class MarkdownFilter implements TextFilter {
      *
      * @return {@link Parser.Builder} to be used for the markup parser
      */
-    protected Parser.Builder createParserBuilder() {
+    protected @Nonnull Parser.Builder createParserBuilder() {
         return Parser.builder();
     }
 
@@ -99,7 +104,7 @@ public class MarkdownFilter implements TextFilter {
      *
      * @return {@link HtmlRenderer.Builder} to be used for HTML rendering
      */
-    protected HtmlRenderer.Builder createHtmlRendererBuilder() {
+    protected @Nonnull HtmlRenderer.Builder createHtmlRendererBuilder() {
         HtmlRenderer.Builder builder = HtmlRenderer.builder();
         if (analyzer != null) {
             builder.attributeProviderFactory(context -> new LinkAnalyzingAttributeProvider(analyzer));
@@ -113,6 +118,7 @@ public class MarkdownFilter implements TextFilter {
     /**
      * An {@link AttributeProvider} that uses {@link LinkAnalyzer}.
      */
+    @ParametersAreNonnullByDefault
     private static class LinkAnalyzingAttributeProvider implements AttributeProvider {
         private static final String HTML_SRC = "src";
         private static final String HTML_HREF = "href";
@@ -152,6 +158,7 @@ public class MarkdownFilter implements TextFilter {
     /**
      * An {@link AttributeProvider} that adds a css class to all fenced code blocks.
      */
+    @ParametersAreNonnullByDefault
     private static class FencedCodeBlockAttributeProvider implements AttributeProvider {
         private static final String HTML_CLASS = "class";
 

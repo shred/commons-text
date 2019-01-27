@@ -28,6 +28,9 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -37,6 +40,7 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class SmilyFilter implements TextFilter {
 
     private String baseUrl = "";
@@ -90,7 +94,7 @@ public class SmilyFilter implements TextFilter {
         smilyPattern = Pattern.compile(pattern, Pattern.DOTALL);
     }
 
-    private String escapeHtml(String text) {
+    private @Nonnull String escapeHtml(String text) {
         return text.replace("&", "&amp;").replace("<", "&lt;").replace("\"", "&quot;");
     }
 

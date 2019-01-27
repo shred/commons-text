@@ -29,6 +29,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -40,6 +43,7 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class SimplifyHtmlFilter implements TextFilter {
 
     private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+(>|$)", Pattern.DOTALL);
@@ -147,7 +151,7 @@ public class SimplifyHtmlFilter implements TextFilter {
      *            Set of accepted attributes, may be empty or {@code null} if any
      *            attribute is accepted
      */
-    private void processAttributes(String attr, StringBuilder result, Set<String> accepted) {
+    private void processAttributes(String attr, StringBuilder result, @Nullable Set<String> accepted) {
         // If we accept no attributes, we will not change the result anyways.
         if (accepted == null || accepted.isEmpty()) {
             return;

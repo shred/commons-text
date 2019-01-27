@@ -19,6 +19,8 @@
  */
 package org.shredzone.commons.text.filter;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -31,6 +33,7 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class ParagraphFilter implements TextFilter {
 
     private boolean foldLines = true;

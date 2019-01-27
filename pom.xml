@@ -175,9 +175,15 @@
             <version>${wikitext.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[4,)</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

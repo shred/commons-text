@@ -22,11 +22,15 @@ package org.shredzone.commons.text.utils;
 import java.io.IOException;
 import java.io.Writer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * A fast String writer that does not synchronize.
  *
  * @author Richard "Shred" Körber
  */
+@ParametersAreNonnullByDefault
 public class FastStringWriter extends Writer {
 
     private final StringBuilder sb;
@@ -83,7 +87,7 @@ public class FastStringWriter extends Writer {
     /**
      * Returns a {@link StringBuilder} with the contents.
      */
-    public StringBuilder toStringBuilder() {
+    public @Nonnull StringBuilder toStringBuilder() {
         return sb;
     }
 

@@ -22,15 +22,13 @@ package org.shredzone.commons.text.utils;
 import java.io.IOException;
 import java.io.Writer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
+import edu.umd.cs.findbugs.annotations.Nullable;
 
 /**
  * A fast String writer that does not synchronize.
  *
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class FastStringWriter extends Writer {
 
     private final StringBuilder sb;
@@ -53,8 +51,10 @@ public class FastStringWriter extends Writer {
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len) throws IOException {
-        sb.append(cbuf, off, len);
+    public void write(@Nullable char[] cbuf, int off, int len) throws IOException {
+        if (cbuf != null) {
+            sb.append(cbuf, off, len);
+        }
     }
 
     @Override
@@ -64,9 +64,11 @@ public class FastStringWriter extends Writer {
     }
 
     @Override
-    public void write(String str, int off, int len) throws IOException {
+    public void write(@Nullable String str, int off, int len) throws IOException {
         // superclass synchronizes
-        sb.append(str, off, len);
+        if (str != null) {
+            sb.append(str, off, len);
+        }
     }
 
     @Override
@@ -87,7 +89,7 @@ public class FastStringWriter extends Writer {
     /**
      * Returns a {@link StringBuilder} with the contents.
      */
-    public @Nonnull StringBuilder toStringBuilder() {
+    public StringBuilder toStringBuilder() {
         return sb;
     }
 

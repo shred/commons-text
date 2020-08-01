@@ -22,9 +22,7 @@ package org.shredzone.commons.text.filter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -33,7 +31,6 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class LinkToUrlFilter implements TextFilter {
 
     // TODO: allow trailing period, comma etc.
@@ -45,8 +42,8 @@ public class LinkToUrlFilter implements TextFilter {
     private boolean noFollow = false;
     private boolean noReferrer = false;
     private boolean noOpener = true;
-    private String target = null;
-    private String tag = null;
+    private @Nullable String target = null;
+    private @Nullable String tag = null;
 
     /**
      * Creates a new {@link LinkToUrlFilter}.

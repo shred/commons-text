@@ -29,9 +29,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -43,14 +41,13 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class SimplifyHtmlFilter implements TextFilter {
 
     private static final Pattern TAG_PATTERN = Pattern.compile("<[^>]+(>|$)", Pattern.DOTALL);
     private static final Pattern TAG_OPEN = Pattern.compile("<(\\w+)\\s*(.*?)\\s*(/?)>");
     private static final Pattern TAG_CLOSE = Pattern.compile("</(\\w+)\\s*>");
 
-    private Map<String, Set<String>> acceptedTags = new HashMap<>();
+    private final Map<String, Set<String>> acceptedTags = new HashMap<>();
 
     /**
      * Adds a tag that is accepted by this filter, with all its attributes.
@@ -85,10 +82,9 @@ public class SimplifyHtmlFilter implements TextFilter {
         acceptedTags.put(tag.toLowerCase(), attributeSet);
     }
 
-
     @Override
     public CharSequence apply(CharSequence text) {
-        StringBuffer sb = new StringBuffer(text.length() * 11 / 10); //NOSONAR: Matcher requires StringBuffer
+        StringBuffer sb = new StringBuffer(text.length() * 11 / 10);
 
         Matcher m = TAG_PATTERN.matcher(text);
         while (m.find()) {
@@ -104,7 +100,7 @@ public class SimplifyHtmlFilter implements TextFilter {
      *
      * @param text
      *            Tag (complete tag including the angle brackets)
-     * @return Cleaned up tag, or {@code null} if the tag was not accepted
+     * @return Cleaned up tag, or empty string if the tag was not accepted
      */
     private String processTag(CharSequence text) {
         if (text.charAt(1) != '/') {

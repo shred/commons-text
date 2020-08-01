@@ -21,9 +21,7 @@ package org.shredzone.commons.text.filter;
 
 import java.io.Writer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.eclipse.mylyn.wikitext.parser.Attributes;
 import org.eclipse.mylyn.wikitext.parser.DocumentBuilder;
 import org.eclipse.mylyn.wikitext.parser.LinkAttributes;
@@ -43,10 +41,9 @@ import org.shredzone.commons.text.utils.FastStringWriter;
  * @see <a href="http://wiki.eclipse.org/Mylyn/Incubator/WikiText">Mylyn WikiText</a>
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class TextileFilter implements TextFilter {
 
-    private LinkAnalyzer analyzer;
+    private @Nullable LinkAnalyzer analyzer;
 
     /**
      * Sets a {@link LinkAnalyzer} to be used for converting links and image source URLs.
@@ -54,7 +51,7 @@ public class TextileFilter implements TextFilter {
      * @param analyzer
      *            {@link LinkAnalyzer} to be used
      */
-    public void setAnalyzer(@Nonnull LinkAnalyzer analyzer) {
+    public void setAnalyzer(@Nullable LinkAnalyzer analyzer) {
         this.analyzer = analyzer;
     }
 
@@ -68,7 +65,7 @@ public class TextileFilter implements TextFilter {
      *            {@link Writer} to write the HTML output to
      * @return {@link DocumentBuilder} to be used for the markup parser
      */
-    protected @Nonnull DocumentBuilder createDocumentBuilder(Writer writer) {
+    protected DocumentBuilder createDocumentBuilder(Writer writer) {
         if (analyzer != null) {
             return new LinkAnalyzingHtmlDocumentBuilder(writer, analyzer);
         } else {
@@ -92,9 +89,7 @@ public class TextileFilter implements TextFilter {
     /**
      * A {@link HtmlDocumentBuilder} that uses a {@link LinkAnalyzer}.
      */
-    @ParametersAreNonnullByDefault
     private static class LinkAnalyzingHtmlDocumentBuilder extends HtmlDocumentBuilder {
-
         private final LinkAnalyzer analyzer;
 
         public LinkAnalyzingHtmlDocumentBuilder(Writer writer, LinkAnalyzer analyzer) {

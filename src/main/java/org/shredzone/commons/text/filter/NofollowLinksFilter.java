@@ -22,8 +22,6 @@ package org.shredzone.commons.text.filter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -33,7 +31,6 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class NofollowLinksFilter implements TextFilter {
 
     private static final Pattern HREF_PATTERN = Pattern.compile(

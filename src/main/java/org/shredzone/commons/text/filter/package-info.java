@@ -17,20 +17,16 @@
  * You should have received a copy of the GNU Library General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.shredzone.commons.text.filter;
-
-import org.shredzone.commons.text.TextFilter;
 
 /**
- * A simple filter that keeps the text unchanged.
- *
- * @author Richard "Shred" Körber
+ * This package contains all the filters.
  */
-public class KeepFilter implements TextFilter {
+@ReturnValuesAreNonnullByDefault
+@DefaultAnnotationForParameters(NonNull.class)
+@DefaultAnnotationForFields(NonNull.class)
+package org.shredzone.commons.text.filter;
 
-    @Override
-    public CharSequence apply(CharSequence text) {
-        return text;
-    }
-
-}
+import edu.umd.cs.findbugs.annotations.DefaultAnnotationForFields;
+import edu.umd.cs.findbugs.annotations.DefaultAnnotationForParameters;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.ReturnValuesAreNonnullByDefault;

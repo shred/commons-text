@@ -21,10 +21,7 @@ package org.shredzone.commons.text.filter;
 
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Image;
 import org.commonmark.node.Link;
@@ -44,11 +41,10 @@ import org.shredzone.commons.text.TextFilter;
  * @see <a href="https://github.com/atlassian/commonmark-java">commonmark-java</a>
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class MarkdownFilter implements TextFilter {
 
-    private LinkAnalyzer analyzer;
-    private String preClass;
+    private @Nullable LinkAnalyzer analyzer;
+    private @Nullable String preClass;
 
     /**
      * Sets a {@link LinkAnalyzer} to be used for converting links and image source URLs.
@@ -88,7 +84,7 @@ public class MarkdownFilter implements TextFilter {
      *
      * @return {@link Parser.Builder} to be used for the markup parser
      */
-    protected @Nonnull Parser.Builder createParserBuilder() {
+    protected Parser.Builder createParserBuilder() {
         return Parser.builder();
     }
 
@@ -104,7 +100,7 @@ public class MarkdownFilter implements TextFilter {
      *
      * @return {@link HtmlRenderer.Builder} to be used for HTML rendering
      */
-    protected @Nonnull HtmlRenderer.Builder createHtmlRendererBuilder() {
+    protected HtmlRenderer.Builder createHtmlRendererBuilder() {
         HtmlRenderer.Builder builder = HtmlRenderer.builder();
         if (analyzer != null) {
             builder.attributeProviderFactory(context -> new LinkAnalyzingAttributeProvider(analyzer));
@@ -118,7 +114,6 @@ public class MarkdownFilter implements TextFilter {
     /**
      * An {@link AttributeProvider} that uses {@link LinkAnalyzer}.
      */
-    @ParametersAreNonnullByDefault
     private static class LinkAnalyzingAttributeProvider implements AttributeProvider {
         private static final String HTML_SRC = "src";
         private static final String HTML_HREF = "href";
@@ -158,7 +153,6 @@ public class MarkdownFilter implements TextFilter {
     /**
      * An {@link AttributeProvider} that adds a css class to all fenced code blocks.
      */
-    @ParametersAreNonnullByDefault
     private static class FencedCodeBlockAttributeProvider implements AttributeProvider {
         private static final String HTML_CLASS = "class";
 

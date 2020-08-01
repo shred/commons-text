@@ -28,9 +28,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
+import edu.umd.cs.findbugs.annotations.Nullable;
 import org.shredzone.commons.text.TextFilter;
 
 /**
@@ -40,12 +38,11 @@ import org.shredzone.commons.text.TextFilter;
  *
  * @author Richard "Shred" Körber
  */
-@ParametersAreNonnullByDefault
 public class SmilyFilter implements TextFilter {
 
     private String baseUrl = "";
-    private Map<String, String> smilyMap = new HashMap<>();
-    private Pattern smilyPattern;
+    private final Map<String, String> smilyMap = new HashMap<>();
+    private @Nullable Pattern smilyPattern;
 
     /**
      * Creates a new {@link SmilyFilter}.
@@ -94,12 +91,16 @@ public class SmilyFilter implements TextFilter {
         smilyPattern = Pattern.compile(pattern, Pattern.DOTALL);
     }
 
-    private @Nonnull String escapeHtml(String text) {
+    private String escapeHtml(String text) {
         return text.replace("&", "&amp;").replace("<", "&lt;").replace("\"", "&quot;");
     }
 
     @Override
     public CharSequence apply(CharSequence text) {
+        if (smilyPattern == null) {
+            return text;
+        }
+
         Matcher m = smilyPattern.matcher(text);
 
         StringBuilder result = null;

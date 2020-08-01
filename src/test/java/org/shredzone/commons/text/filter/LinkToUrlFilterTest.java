@@ -51,7 +51,7 @@ public class LinkToUrlFilterTest {
     @Test
     public void nofollowTest() {
         LinkToUrlFilter filter = new LinkToUrlFilter();
-        filter.setFollow(false);
+        filter.setNoFollow(true);
 
         StringBuilder sb = new StringBuilder();
         sb.append("This is a http://www.link.example/to/somewhere.gif ");
@@ -69,6 +69,26 @@ public class LinkToUrlFilterTest {
     }
 
     @Test
+    public void noReferrerTest() {
+        LinkToUrlFilter filter = new LinkToUrlFilter();
+        filter.setNoReferrer(true);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is a http://www.link.example/to/somewhere.gif ");
+        sb.append("This is another HTTPS://www.link.example/to/ a directory. ");
+        sb.append("Download here ftp://ftp.foobar.example/file.png");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" rel=\"noreferrer\">http://www.link.example/to/somewhere.gif</a> ");
+        expect.append("This is another <a href=\"HTTPS://www.link.example/to/\" rel=\"noreferrer\">HTTPS://www.link.example/to/</a> a directory. ");
+        expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" rel=\"noreferrer\">ftp://ftp.foobar.example/file.png</a>");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
     public void targetTest() {
         LinkToUrlFilter filter = new LinkToUrlFilter();
         filter.setTarget("_blank");
@@ -81,9 +101,72 @@ public class LinkToUrlFilterTest {
         CharSequence out = filter.apply(sb);
 
         StringBuilder expect = new StringBuilder();
+        expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_blank\" rel=\"noopener\">http://www.link.example/to/somewhere.gif</a> ");
+        expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_blank\" rel=\"noopener\">https://www.link.example/to/</a> a directory. ");
+        expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_blank\" rel=\"noopener\">ftp://ftp.foobar.example/file.png</a>");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void targetNoBlankTest() {
+        LinkToUrlFilter filter = new LinkToUrlFilter();
+        filter.setTarget("_top");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is a http://www.link.example/to/somewhere.gif ");
+        sb.append("This is another https://www.link.example/to/ a directory. ");
+        sb.append("Download here ftp://ftp.foobar.example/file.png");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_top\">http://www.link.example/to/somewhere.gif</a> ");
+        expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_top\">https://www.link.example/to/</a> a directory. ");
+        expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_top\">ftp://ftp.foobar.example/file.png</a>");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void targetOpenerTest() {
+        LinkToUrlFilter filter = new LinkToUrlFilter();
+        filter.setTarget("_blank");
+        filter.setNoOpener(false);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is a http://www.link.example/to/somewhere.gif ");
+        sb.append("This is another https://www.link.example/to/ a directory. ");
+        sb.append("Download here ftp://ftp.foobar.example/file.png");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
         expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_blank\">http://www.link.example/to/somewhere.gif</a> ");
         expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_blank\">https://www.link.example/to/</a> a directory. ");
         expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_blank\">ftp://ftp.foobar.example/file.png</a>");
+
+        Assert.assertEquals(expect.toString(), out.toString());
+    }
+
+    @Test
+    public void combinationTest() {
+        LinkToUrlFilter filter = new LinkToUrlFilter();
+        filter.setTarget("_blank");
+        filter.setNoReferrer(true);
+        filter.setNoFollow(true);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("This is a http://www.link.example/to/somewhere.gif ");
+        sb.append("This is another https://www.link.example/to/ a directory. ");
+        sb.append("Download here ftp://ftp.foobar.example/file.png");
+
+        CharSequence out = filter.apply(sb);
+
+        StringBuilder expect = new StringBuilder();
+        expect.append("This is a <a href=\"http://www.link.example/to/somewhere.gif\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">http://www.link.example/to/somewhere.gif</a> ");
+        expect.append("This is another <a href=\"https://www.link.example/to/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">https://www.link.example/to/</a> a directory. ");
+        expect.append("Download here <a href=\"ftp://ftp.foobar.example/file.png\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">ftp://ftp.foobar.example/file.png</a>");
 
         Assert.assertEquals(expect.toString(), out.toString());
     }

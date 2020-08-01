@@ -42,7 +42,9 @@ public class LinkToUrlFilter implements TextFilter {
             Pattern.CASE_INSENSITIVE
             );
 
-    private boolean follow = true;
+    private boolean noFollow = false;
+    private boolean noReferrer = false;
+    private boolean noOpener = true;
     private String target = null;
     private String tag = null;
 
@@ -59,11 +61,59 @@ public class LinkToUrlFilter implements TextFilter {
      * follow to the target.
      *
      * @param follow
-     *            {@code true} if links should be followed by web crawlers. Defaults to
-     *            {@code true}.
+     *         {@code true} if links should be followed by web crawlers. Defaults to
+     *         {@code true}.
+     * @deprecated It is confusing that this property must be set to {@code false} in
+     * order to have a "nofollow" relationship. Use {@link #setNoFollow(boolean)}
+     * instead.
      */
+    @Deprecated
     public void setFollow(boolean follow) {
-        this.follow = follow;
+        setNoFollow(!follow);
+    }
+
+    /**
+     * Sets the way search engines evaluate the created link. If set to {@code true}, a
+     * {@code rel="nofollow"} attribute is added to the link, so web crawlers will not
+     * follow to the target.
+     *
+     * @param noFollow
+     *         {@code true} if links should not be followed by web crawlers. Defaults to
+     *         {@code false}.
+     * @since 2.6
+     */
+    public void setNoFollow(boolean noFollow) {
+        this.noFollow = noFollow;
+        updateTag();
+    }
+
+    /**
+     * Sets whether links with target "_blank" should have a "noopener" relationship.
+     * Activated by default. Note that deactivation poses a security risk for your
+     * website, and should only be done for a very good reason!
+     *
+     * @param noOpener
+     *         {@code true} to set "noopener" relationships on all links with a "_blank"
+     *         target. This is the default.
+     * @since 2.6
+     */
+    public void setNoOpener(boolean noOpener) {
+        this.noOpener = noOpener;
+        updateTag();
+    }
+
+    /**
+     * Sets wheter a "noreferrer" relationship shall be used. If {@code true} (and
+     * supported by the browser), the browser won't send a "Referer" header when following
+     * a link.
+     *
+     * @param noReferrer
+     *         If {@code true}, a "noreferrer" relation is added to each link. {@code
+     *         false} by default.
+     * @since 2.6
+     */
+    public void setNoReferrer(boolean noReferrer) {
+        this.noReferrer = noReferrer;
         updateTag();
     }
 
@@ -83,11 +133,21 @@ public class LinkToUrlFilter implements TextFilter {
      */
     private void updateTag() {
         StringBuilder sb = new StringBuilder("$1<a href=\"$2\"");
-        if (!follow) {
-            sb.append(" rel=\"nofollow\"");
+        StringBuilder relSb = new StringBuilder();
+        if (noFollow) {
+            relSb.append("nofollow ");
         }
         if (target != null) {
             sb.append(" target=\"").append(target).append('"');
+            if (noOpener && "_blank".equals(target)) {
+                relSb.append("noopener ");
+            }
+        }
+        if (noReferrer) {
+            relSb.append("noreferrer ");
+        }
+        if (relSb.length() > 0) {
+            sb.append(" rel=\"").append(relSb.toString().trim()).append('"');
         }
         sb.append(">$2</a>");
         tag = sb.toString();

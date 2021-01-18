@@ -31,8 +31,8 @@
         </developer>
     </developers>
     <properties>
-        <commonmark.version>0.15.2</commonmark.version>
-        <wikitext.version>3.0.37</wikitext.version>
+        <commonmark.version>0.17.0</commonmark.version>
+        <wikitext.version>3.0.38</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -169,7 +169,7 @@
     </reporting>
     <dependencies>
         <dependency>
-            <groupId>com.atlassian.commonmark</groupId>
+            <groupId>org.commonmark</groupId>
             <artifactId>commonmark</artifactId>
             <version>${commonmark.version}</version>
         </dependency>

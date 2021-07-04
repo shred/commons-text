@@ -31,8 +31,8 @@
         </developer>
     </developers>
     <properties>
-        <commonmark.version>0.17.0</commonmark.version>
-        <wikitext.version>3.0.38</wikitext.version>
+        <commonmark.version>0.18.0</commonmark.version>
+        <wikitext.version>3.0.39</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -50,7 +50,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.0.0</version>
+                <version>4.2.3</version>
                 <executions>
                     <execution>
                         <goals>
@@ -85,7 +85,7 @@
                     <dependency>
                         <groupId>org.apache.maven.doxia</groupId>
                         <artifactId>doxia-module-markdown</artifactId>
-                        <version>1.8</version>
+                        <version>1.10</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -211,7 +211,7 @@
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
-            <version>4.0.3</version>
+            <version>4.3.0</version>
             <optional>true</optional>
             <exclusions>
                 <exclusion>
@@ -223,7 +223,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

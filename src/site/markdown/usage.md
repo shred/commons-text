@@ -33,6 +33,7 @@ The filters can be roughly divided into two groups: one that expects plaintext a
 ### Text input
 
 * `KeepFilter`: Keeps the text unchanged.
+* `GithubFlavoredMarkdownFilter`: Like `MarkdownFilter`, but also accepts [GitHub Flavored Markdown](https://github.github.com/gfm/) extensions like tables, task lists, strikethrough, and heading anchors.
 * `HtmlEscapeFilter`: Escapes all characters with special meaning in HTML. This is a basic text to HTML converter.
 * `LinkToUrlFilter`: Detects http, https and ftp links within a plain text, and converts them to HTML links. Optionally, rel="nofollow" can be added to each link, and a link target can be chosen.
 * `MarkdownFilter`: Converts [CommonMark](http://commonmark.org/) markdown to HTML. Optionally, a `LinkAnalyzer` can be applied.

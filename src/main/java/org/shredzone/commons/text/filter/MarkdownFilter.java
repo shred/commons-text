@@ -19,9 +19,13 @@
  */
 package org.shredzone.commons.text.filter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.OverrideMustInvoke;
+import org.commonmark.Extension;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Image;
 import org.commonmark.node.Link;
@@ -79,13 +83,16 @@ public class MarkdownFilter implements TextFilter {
      * <p>
      * Note that this method is commonmark specific and might be removed in future
      * versions.
-     * <p>
-     * Override this method to add commonmark extensions to the builder.
      *
      * @return {@link Parser.Builder} to be used for the markup parser
      */
     protected Parser.Builder createParserBuilder() {
-        return Parser.builder();
+        Parser.Builder builder = Parser.builder();
+        List<Extension> extensions = createExtensionList();
+        if (!extensions.isEmpty()) {
+            builder.extensions(extensions);
+        }
+        return builder;
     }
 
     /**
@@ -95,8 +102,6 @@ public class MarkdownFilter implements TextFilter {
      * <p>
      * Note that this method is commonmark specific and might be removed in future
      * versions.
-     * <p>
-     * Override this method to add commonmark extensions to the builder.
      *
      * @return {@link HtmlRenderer.Builder} to be used for HTML rendering
      */
@@ -108,7 +113,26 @@ public class MarkdownFilter implements TextFilter {
         if (preClass != null) {
             builder.attributeProviderFactory(context -> new FencedCodeBlockAttributeProvider(preClass));
         }
+        List<Extension> extensions = createExtensionList();
+        if (!extensions.isEmpty()) {
+            builder.extensions(extensions);
+        }
         return builder;
+    }
+
+    /**
+     * Creates a list of markdown extensions to be used. By default this list is empty.
+     * Subclasses may add extensions to the list.
+     * <p>
+     * Note that this method is commonmark specific and might be removed in future
+     * versions.
+     *
+     * @return Modifiable {@link List} of extensions
+     * @since 2.8
+     */
+    @OverrideMustInvoke
+    protected List<Extension> createExtensionList() {
+        return new ArrayList<>();
     }
 
     /**

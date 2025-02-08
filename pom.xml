@@ -31,8 +31,8 @@
         </developer>
     </developers>
     <properties>
-        <commonmark.version>0.18.0</commonmark.version>
-        <wikitext.version>3.0.39</wikitext.version>
+        <commonmark.version>0.21.0</commonmark.version>
+        <wikitext.version>3.0.46.202301111837</wikitext.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -50,7 +50,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.2.3</version>
+                <version>4.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -211,7 +211,7 @@
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
-            <version>4.3.0</version>
+            <version>4.7.3</version>
             <optional>true</optional>
             <exclusions>
                 <exclusion>

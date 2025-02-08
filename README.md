@@ -18,8 +18,8 @@ See the [online documentation](https://shredzone.org/maven/commons-text/) for ex
 
 ## Contribute
 
-* Fork the [Source code at GitHub](https://github.com/shred/commons-text). Feel free to send pull requests.
-* Found a bug? [File a bug report!](https://github.com/shred/commons-text/issues)
+* Fork the [Source code at Codeberg](https://codeberg.org/shred/commons-text). Feel free to send pull requests.
+* Found a bug? [File a bug report!](https://codeberg.org/shred/commons-text/issues)
 
 ## License
 
